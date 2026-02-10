@@ -36,7 +36,7 @@
 
         /* --- 1. Hero Portion --- */
         .hero {
-            height: 90vh; /* Increased slightly for impact */
+            height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -69,7 +69,7 @@
             padding-bottom: 60px;
         }
 
-        .item { overflow: hidden; border-radius: 4px; background: #111; }
+        .item { overflow: hidden; border-radius: 4px; background: #111; cursor: pointer; }
         .item img { 
             width: 100%; 
             height: 100%; 
@@ -77,7 +77,7 @@
             filter: brightness(0.7) grayscale(0.3); 
             transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); 
         }
-        .item:hover img { filter: brightness(1) grayscale(0); transform: scale(1.08); }
+        .item:hover img { filter: brightness(1) grayscale(0); transform: scale(1.05); }
     
         @media (min-width: 900px) {
             .gallery { grid-template-columns: repeat(3, 1fr); }
@@ -85,54 +85,114 @@
             .wide { grid-column: span 2; }
         }
 
-        /* --- 4. Integrated "See More" Button --- */
-        .see-more-wrapper {
-            text-align: center;
-            padding: 80px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .see-more-wrapper p { opacity: 0.6; margin-bottom: 24px; font-size: 15px; letter-spacing: 1px; }
-        .see-more-wrapper a {
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            padding: 16px 40px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
-            color: #ffffff;
-            transition: all 0.4s ease;
-            display: inline-block;
-        }
-        .see-more-wrapper a:hover {
-            background: #ffffff;
-            color: #000000;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        /* --- 4. Lightbox Modal --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 5, 0.98);
+            backdrop-filter: blur(15px);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
         }
 
-        /* --- 5. Footer & Contact --- */
-        footer {
-            padding: 100px 0 60px;
+        .modal-content {
+            max-width: 85%;
+            max-height: 60vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .modal-blog {
+            margin-top: 30px;
+            max-width: 700px;
             text-align: center;
-            background: rgba(0,0,0,0.4);
+            animation: slideUp 0.5s ease;
+            padding-bottom: 40px;
         }
+
+        .modal-blog h4 {
+            color: var(--accent-cyan);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 1.2rem;
+        }
+
+        .modal-blog p {
+            color: #ddd;
+            line-height: 1.6;
+            font-size: 1.05rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+
+        /* Back Button Style */
+        .back-btn {
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2.5rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            opacity: 0.5;
+            z-index: 2001;
+        }
+
+        .close-modal:hover { opacity: 1; transform: rotate(90deg); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- 5. See More --- */
+        .see-more-wrapper { text-align: center; padding: 80px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .see-more-wrapper a {
+            text-decoration: none; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+            padding: 16px 40px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50px; color: #ffffff; transition: all 0.4s ease; display: inline-block;
+        }
+        .see-more-wrapper a:hover { background: #ffffff; color: #000000; transform: translateY(-3px); }
+
+        /* --- 6. Footer --- */
+        footer { padding: 100px 0 60px; text-align: center; background: rgba(0,0,0,0.4); }
         .social-links { display: flex; justify-content: center; gap: 1.5em; margin: 40px 0; }
-        .social-links a {
-            color: var(--text-main);
-            font-size: 1.5rem;
-            transition: 0.3s ease;
-            opacity: 0.7;
-        }
+        .social-links a { color: var(--text-main); font-size: 1.5rem; transition: 0.3s ease; opacity: 0.7; }
         .social-links a:hover { color: var(--accent-cyan); transform: translateY(-5px); opacity: 1; }
-        .footer-logo { font-weight: 900; color: var(--accent-cyan); font-size: 1.8rem; margin-bottom: 20px; display: block; letter-spacing: -1px; }
+        .footer-logo { font-weight: 900; color: var(--accent-cyan); font-size: 1.8rem; margin-bottom: 20px; display: block; }
         .footer-credits { color: var(--text-dim); font-size: 0.8rem; letter-spacing: 2px; margin-top: 40px; text-transform: uppercase; }
 
         @media (max-width: 768px) {
             .hero h1 { font-size: 3.5rem; }
-            .about-section p { font-size: 1.1rem; }
-            .gallery { grid-template-columns: 1fr; }
+            .modal-content { max-width: 95%; }
+            .modal-blog p { font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -157,25 +217,54 @@
 
         <div class="gallery-header">
             <h3 style="color: var(--accent-purple); text-transform: uppercase; letter-spacing: 2px;">Visual Stories</h3>
+            <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 10px;">Click any image to read the story behind it.</p>
         </div>
         
         <main class="gallery">
-            <div class="item tall wide"><img src="photo3.jpg" alt="Misty Forest"></div>
-            <div class="item tall"><img src="photo13.jpg" alt="Whispers of Lavender"></div>
-            <div class="item"><img src="photo11.jpg" alt="Blue Windows"></div>
-            <div class="item wide"><img src="photo5.jpg" alt="Winding Road"></div>
-            <div class="item"><img src="photo6.jpg" alt="Angel Statue"></div>
-            <div class="item tall"><img src="photo2.jpg" alt="House in Rain"></div>
-            <div class="item"><img src="photo1.jpg" alt="Sunset Silhouette"></div>
-            <div class="item"><img src="photo4.jpg" alt="Lake Boats"></div>
-            <div class="item"><img src="photo12.jpg" alt="Moonlight"></div>
+            <div class="item tall wide">
+                <img src="photo3.jpg" alt="Misty Forest" data-blog="Walking through this forest felt like stepping into a dream. The mist acted as a natural filter, softening the world around me.">
+            </div>
+            <div class="item tall">
+                <img src="photo13.jpg" alt="Whispers of Lavender" data-blog="The fragrance of the fields was as beautiful as the view. A moment of pure tranquility captured at golden hour.">
+            </div>
+            <div class="item">
+                <img src="photo11.jpg" alt="Blue Windows" data-blog="I've always been fascinated by architecture. These windows seemed to be watching the street with a century of stories.">
+            </div>
+            <div class="item wide">
+                <img src="photo5.jpg" alt="Winding Road" data-blog="The journey is often more beautiful than the destination. This road reminded me to enjoy the curves of life.">
+            </div>
+            <div class="item">
+                <img src="photo6.jpg" alt="Angel Statue" data-blog="Finding stillness in stone. The way the light hit the wings created a sense of divine peace.">
+            </div>
+            <div class="item tall">
+                <img src="photo2.jpg" alt="House in Rain" data-blog="Rainy days aren't gloomy; they are reflective. The way the water saturated the colors of this old house was mesmerizing.">
+            </div>
+            <div class="item">
+                <img src="photo1.jpg" alt="Sunset Silhouette" data-blog="A final goodbye from the sun. The contrast between the dark land and the burning sky is nature's finest art.">
+            </div>
+            <div class="item">
+                <img src="photo4.jpg" alt="Lake Boats" data-blog="Quiet vessels waiting for tomorrow's tide. There is a deep silence found only by the water.">
+            </div>
+            <div class="item">
+                <img src="photo12.jpg" alt="Moonlight" data-blog="When the world sleeps, the light changes. The moon brings out a different kind of magic in the Unspoken Corners.">
+            </div>
         </main>
 
         <div class="see-more-wrapper">
-            <p>Selected moments from Unspoken Corners</p>
+            <p style="opacity: 0.6; margin-bottom: 24px; font-size: 15px; letter-spacing: 1px;">Selected moments from Unspoken Corners</p>
             <a href="https://drive.google.com/drive/folders/1ZpGchlmHQU6h1qaQZlySL6o0M57p5RIj" target="_blank">
                 View Full Archive →
             </a>
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImg">
+        <div class="modal-blog">
+            <h4 id="modalTitle"></h4>
+            <p id="modalDescription"></p>
+            <button class="back-btn" id="modalBackBtn"><i class="fa-solid fa-arrow-left"></i> Back to Gallery</button>
         </div>
     </div>
 
@@ -197,6 +286,46 @@
         </div>
     </footer>
 
+    <script>
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImg");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalDesc = document.getElementById("modalDescription");
+        const closeBtn = document.querySelector(".close-modal");
+        const backBtn = document.getElementById("modalBackBtn");
+
+        // Logic to open modal and fill content
+        document.querySelectorAll('.item img').forEach(image => {
+            image.onclick = () => {
+                modal.style.display = "flex";
+                modalImg.src = image.src;
+                modalTitle.innerText = image.alt;
+                modalDesc.innerText = image.getAttribute('data-blog') || "This moment was captured to preserve the unspoken beauty of the world.";
+                document.body.style.overflow = "hidden"; 
+            }
+        });
+
+        // Function to close modal
+        const closeModal = () => {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        };
+
+        // Attach close event to 'X', Back Button, and Background
+        closeBtn.onclick = closeModal;
+        backBtn.onclick = closeModal;
+        
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                closeModal();
+            }
+        };
+
+        // Escape Key logic
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeModal();
+        });
+    </script>
+
 </body>
 </html>
-
