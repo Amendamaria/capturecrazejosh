@@ -329,7 +329,7 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             </div>
         </main>
 
-        <div class="see-more-wrapper">
+                <div class="see-more-wrapper">
             <p style="opacity: 0.6; margin-bottom: 24px; font-size: 15px; letter-spacing: 1px;">Selected moments from Unspoken Corners</p>
             <a href="https://drive.google.com/drive/folders/1ZpGchlmHQU6h1qaQZlySL6o0M57p5RIj" target="_blank">
                 View Full Archive →
@@ -355,5 +355,54 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             <p style="color: var(--accent-cyan); font-weight: 700; letter-spacing: 1px;">CONNECT WITH ME</p>
             
             <div class="social-links">
-                <a href="https://wa.me/918157982581" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-                <a href="https://www.instagram.com/_capturecrazejosh_" target="_blank"><i class="fa-brands fa-i
+                <a href="https://wa.me/918157982581" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://www.instagram.com/_capturecrazejosh_?igsh=dGltNXVwMmV1eDdn" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://x.com/Capturecrazjosh" target="_blank" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                <a href="https://linkedin.com/in/joshua-joby-94748638b" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="mailto:capturecrazejosh@gmail.com" aria-label="Email"><i class="fa-regular fa-envelope"></i></a>
+            </div>
+            
+            <p style="font-size: 0.9rem; opacity: 0.8;">Turning ordinary scenes into compelling visual stories.</p>
+            <p class="footer-credits">© 2026 JOSHUA JOBY · UNSPOKEN CORNERS</p>
+        </div>
+    </footer>
+
+    <script>
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImg");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalDesc = document.getElementById("modalDescription");
+        const closeBtn = document.querySelector(".close-modal");
+        const backBtn = document.getElementById("modalBackBtn");
+
+        document.querySelectorAll('.item img').forEach(image => {
+            image.onclick = () => {
+                modal.style.display = "block"; // Changed from flex to block for container scrolling
+                modalImg.src = image.src;
+                modalTitle.innerText = image.alt;
+                modalDesc.innerText = image.getAttribute('data-blog') || "This moment was captured to preserve the beauty of the world.";
+                document.body.style.overflow = "hidden"; 
+                // Scroll modal to top when opening a new image
+                modal.scrollTop = 0;
+            }
+        });
+
+        const closeModal = () => {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        };
+
+        closeBtn.onclick = closeModal;
+        backBtn.onclick = closeModal;
+        
+        window.onclick = (event) => {
+            if (event.target == modal) closeModal();
+        };
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeModal();
+        });
+    </script>
+
+</body>
+</html>
