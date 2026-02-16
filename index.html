@@ -36,7 +36,33 @@
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* --- 1. Hero --- */
+        /* --- 1. Top Left Navigation --- */
+        .nav-bar {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            padding: 10px 20px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 20px;
+        }
+        .nav-bar a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: var(--transition);
+            opacity: 0.7;
+        }
+        .nav-bar a:hover { opacity: 1; color: var(--accent-cyan); }
+
+        /* --- 2. Hero --- */
         .hero {
             min-height: 80vh;
             display: flex;
@@ -56,27 +82,29 @@
         }
         .hero h2 { font-size: clamp(1.1rem, 4vw, 1.5rem); color: var(--text-dim); font-weight: 300; }
 
-        /* --- 2. About --- */
+        /* --- 3. About --- */
         .about-section { padding: 80px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .about-content { max-width: 800px; }
         .about-section h3 { color: var(--accent-cyan); margin-bottom: 20px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
         .about-section p { font-size: clamp(1.1rem, 3vw, 1.25rem); color: var(--text-dim); }
 
-        /* --- 3. Gallery --- */
+        /* --- 4. Bento Gallery --- */
         .gallery-header { padding: 60px 0 30px; }
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 220px;
             gap: 20px;
             padding-bottom: 40px;
         }
 
         .item { 
+            position: relative;
             overflow: hidden; 
-            border-radius: 8px; 
+            border-radius: 15px; 
             background: #111; 
             cursor: pointer; 
-            aspect-ratio: 4/5;
+            border: 1px solid rgba(255,255,255,0.05);
         }
         .item img { 
             width: 100%; 
@@ -85,15 +113,23 @@
             filter: brightness(0.8); 
             transition: var(--transition); 
         }
-        .item:hover img { filter: brightness(1); transform: scale(1.03); }
+        .item:hover img { filter: brightness(1); transform: scale(1.04); }
     
-        @media (min-width: 900px) {
-            .gallery { grid-template-columns: repeat(3, 1fr); }
-            .tall { grid-row: span 2; }
-            .wide { grid-column: span 2; }
+        /* Bento Grid logic */
+        .bento-large { grid-column: span 2; grid-row: span 2; }
+        .bento-tall { grid-row: span 2; }
+        .bento-wide { grid-column: span 2; }
+
+        @media (max-width: 900px) {
+            .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
+            .nav-bar { top: 15px; left: 15px; padding: 8px 15px; }
+        }
+        @media (max-width: 600px) {
+            .gallery { display: flex; flex-direction: column; }
+            .item { height: 350px; }
         }
 
-        /* --- 4. Lightbox Modal (The Core Fix) --- */
+        /* --- 5. Lightbox Modal --- */
         .modal {
             display: none;
             position: fixed;
@@ -104,7 +140,7 @@
             height: 100%;
             background: rgba(5, 5, 5, 0.98);
             backdrop-filter: blur(20px);
-            overflow-y: auto; /* Allows scrolling of the whole modal */
+            overflow-y: auto;
             padding: 40px 20px;
         }
 
@@ -118,7 +154,7 @@
 
         .modal-content {
             width: 100%;
-            max-height: 70vh; /* Limits image height on desktop */
+            max-height: 70vh;
             object-fit: contain;
             border-radius: 4px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
@@ -147,7 +183,7 @@
             font-size: 1.05rem;
             font-weight: 300;
             margin-bottom: 30px;
-            white-space: pre-line; /* Keeps your paragraph breaks */
+            white-space: pre-line;
         }
 
         .back-btn {
@@ -162,7 +198,6 @@
             letter-spacing: 1px;
             transition: var(--transition);
         }
-
         .back-btn:hover { background: var(--accent-cyan); color: #000; }
 
         .close-modal {
@@ -182,21 +217,10 @@
             justify-content: center;
         }
 
-        /* --- Mobile Specific Fixes --- */
-        @media (max-width: 768px) {
-            .modal { padding: 60px 15px 40px; }
-            .modal-content { 
-                max-height: 45vh; /* Prevents image from taking whole screen */
-                margin-bottom: 20px;
-            }
-            .modal-blog p { font-size: 1rem; text-align: left; }
-            .item { aspect-ratio: 1/1; } /* Square grid on mobile for efficiency */
-        }
-
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- 5. See More --- */
+        /* --- 6. See More & Footer --- */
         .see-more-wrapper { text-align: center; padding: 60px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .see-more-wrapper a {
             text-decoration: none; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
@@ -204,7 +228,6 @@
         }
         .see-more-wrapper a:hover { background: #ffffff; color: #000000; transform: translateY(-3px); }
 
-        /* --- 6. Footer --- */
         footer { padding: 80px 0 40px; text-align: center; background: rgba(0,0,0,0.4); }
         .social-links { display: flex; justify-content: center; gap: 1.5em; margin: 30px 0; }
         .social-links a { color: var(--text-main); font-size: 1.5rem; transition: var(--transition); opacity: 0.7; }
@@ -215,6 +238,12 @@
 </head>
 <body>
 
+    <nav class="nav-bar">
+        <a href="#">Home</a>
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+    </nav>
+
     <div class="container">
         <section class="hero">
             <p>Passionate Photographer</p>
@@ -222,7 +251,7 @@
             <h2>Capturing the beauty hidden in everyday life.</h2>
         </section>
 
-        <section class="about-section">
+        <section id="about" class="about-section">
             <div class="about-content">
                 <h3>About Me</h3>
                 <p>
@@ -232,14 +261,14 @@
             </div>
         </section>
 
-        <div class="gallery-header">
+        <div id="gallery" class="gallery-header">
             <h3 style="color: var(--accent-purple); text-transform: uppercase; letter-spacing: 2px;">Visual Stories</h3>
             <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 10px;">Click any image to read the story behind it.</p>
         </div>
         
         <main class="gallery">
-            <div class="item tall wide">
-                <img src="photo3.jpg" loading="lazy" alt="Misty Forest" data-blog="Roots That Remember
+            <div class="item bento-large">
+                <img src="photo3.jpg" loading="lazy" alt="Roots That Remember" data-blog="Roots That Remember
 The forest didn’t feel silent—it felt watchful.
 Twisted roots spread across the ground like veins, holding on to stories older than time. Standing there during our school tour, in the quiet afternoon light of Gunacave, it felt as if nature itself was breathing slowly around us.
 This tree, bent yet unbroken, felt deeply human—scarred, grounded, and still standing tall despite everything beneath it. The fog softened the chaos, turning tangled roots and branches into a calm rhythm. For a moment, the noise of friends, laughter, and schedules faded, and it was just this scene and me.
@@ -247,53 +276,57 @@ Shot on Moto G85, this frame wasn’t planned. It was felt.
 A pause in a busy day.
 A reminder that even in confusion, there is strength in staying rooted.">
             </div>
-            <div class="item tall">
+
+            <div class="item bento-tall">
                 <img src="photo13.jpg" loading="lazy" alt="Whispers of Lavender" data-blog="Silent Details of Vagamon
 The photo was taken in Vagamon, a beautiful location with hills that speak of nature softly and showcase beauty in small forms. It was taken using a vivo y11, and what attracted me to this wildflower was not its size, but its presence.
 The soft purple bloom stood out gently against the dark, blurry background, creating a natural separation between the subject and the environment. I decided to keep the framing simple, giving the flower space to breathe. The shallow focus helps to emphasize the beauty of the textures on the flower, as each little piece has a story to tell.
 Vagamon has a way of slowness. In such an atmosphere, events like this take you by surprise. This was no instance of capturing the perfect flower shot; it was about celebrating an aspect that could easily pass one by.
 Through this image, I hoped to convey a sense of tranquility, emphasizing that sometimes it is the smallest details that create the greatest lasting impression, even when in a wide expanse.">
             </div>
+
             <div class="item">
-                <img src="photo11.jpg" loading="lazy" alt="Windows of Quiet Memories" data-blog="
-After school, on the way home, this monastery stood calm—unchanged, unhurried. The blue windows and doors felt like gentle pauses in time, holding years of silence, prayers, and footsteps of those who passed through before us. At Mannanam, the presence of St. Chavara feels close, not loud just steady, like a memory that never fades.
+                <img src="photo11.jpg" loading="lazy" alt="Windows of Quiet Memories" data-blog="After school, on the way home, this monastery stood calm—unchanged, unhurried. The blue windows and doors felt like gentle pauses in time, holding years of silence, prayers, and footsteps of those who passed through before us. At Mannanam, the presence of St. Chavara feels close, not loud just steady, like a memory that never fades.
 The building didn’t ask for attention. It simply existed, clean and composed, letting the afternoon light rest on its white walls. Looking at it now, it brings back school-day thoughts bags on our shoulders, tired feet, and minds full of small dreams. Some places don’t speak they remind.
 Shot on vivo Y11, this frame is less about architecture and more about feeling. A moment between school and home. Between noise and calm. Between who we were and who we’re becoming.">
             </div>
-            <div class="item wide">
+
+            <div class="item bento-wide">
                 <img src="photo5.jpg" loading="lazy" alt="Where the Road Slows You Down" data-blog="Where the Road Slows You Down
 On our school tour to Munnar, this road felt like a gentle pause in motion. Curving through endless tea plantations, it didn’t rush anywhere it invited you to slow down and look around. The green hills rolled quietly under a cloudy sky, each layer softer than the last.
 Standing there, surrounded by tea gardens, the air felt cooler and lighter, carrying the calm that only mountains know. Laughter from friends echoed somewhere behind, but this moment stayed still, almost personal. It felt like the road was teaching us something simple: not every journey is about reaching fast—some are meant to be felt.
 Shot on vivo Y11, this frame holds more than a landscape.
 It holds a school day memory, fresh wind, and a bend in the road that made us stop and breathe.">
             </div>
+
             <div class="item">
                 <img src="photo6.jpg" loading="lazy" alt="Quiet Guardian of Light" data-blog="Quiet Guardian of Light
 Resting in a pool of soft artificial light, this little angel feels almost alive. The shadows wrap gently around its face, while the glow highlights every curve, every delicate detail. There is a sense of innocence here, mixed with calm, like a silent guardian watching over the room.
 Captured in a simple studio setup at home, this decor piece becomes more than an object. It feels thoughtful, almost human, as if it is listening rather than speaking. The darkness around it gives space for emotion, letting the light tell its own story. Moments like this remind us that beauty does not always need grand places. Sometimes it lives quietly on a shelf, waiting to be noticed.
 Shot on vivo Y11, this frame is about patience and observation. A small setup, a controlled light, and a peaceful subject coming together to create a gentle mood.">
             </div>
-            <div class="item tall">
-                <img src="photo2.jpg" loading="lazy" alt="Rain Interrupted Ride 🌧️🚴‍♂️" data-blog="
-In the middle of our cycle ride around Kodaikanal Lake, the sky suddenly changed its mood. What started as a normal school tour moment turned into something cinematic. The rain poured without warning, and we had no choice but to stop riding.
+
+            <div class="item bento-tall">
+                <img src="photo2.jpg" loading="lazy" alt="Rain Interrupted Ride 🌧️🚴‍♂️" data-blog="In the middle of our cycle ride around Kodaikanal Lake, the sky suddenly changed its mood. What started as a normal school tour moment turned into something cinematic. The rain poured without warning, and we had no choice but to stop riding.
 That’s when I noticed this quiet wooden structure standing in the lake, almost like it was waiting for the rain. The dark clouds above, the ripples on the water, the soft mist in the background everything felt still yet alive.
 Captured on my Moto G85, this wasn’t a planned shot. It was just a pause between laughter, wet roads, and racing friends. Sometimes the best frames come when life tells you to slow down for a minute 🌫️🏡✨">
             </div>
+
             <div class="item">
                 <img src="photo1.jpg" loading="lazy" alt="Sunset Silhouette" data-blog="Image captured at Paruthumpara View Point at sunset, captured with a Moto G85 mobile phone. No pre-planned plan, just a random moment of convergence of light, sky, silence.
 With the sun sinking below the horizon, the clouds formed a layered pattern in the sky. They moved from a warm gold color to dark shadows. The contrast was strong and peaceful, a breath before nightfall. I saw two people on the outskirts of the hillside, and they became the grounding element for the background. Keeping them in shadows was important, as details might have taken away from the emotional impact.
 I decided to let the foreground sink into darkness, letting the sky guide the narrative. The light didn’t need any additional help, as it conveyed its own atmosphere. This image isn’t about who these people are, but rather what they symbolize, which is shared silence, shared presence, and the beauty of being there.
 The fact that I used my mobile to shoot reminded me that photography is not about gears but simply awareness. One needs to be able to observe when the sky intends to make some noise.">
             </div>
+
             <div class="item">
-                <img src="photo4.jpg" loading="lazy" alt="Before the Rain Speaks 🌥️🌊" data-blog="
-Captured on my Vivo Y11 during our school tour, this was one of those unexpected moments that didn’t ask for attention but deserved it.
+                <img src="photo4.jpg" loading="lazy" alt="Before the Rain Speaks 🌥️🌊" data-blog="Captured on my Vivo Y11 during our school tour, this was one of those unexpected moments that didn’t ask for attention but deserved it.
 At Mattupetti Dam, the sky slowly turned heavy with dark clouds. The lake stayed calm, almost like it was holding its breath. The colorful boats resting by the shore added a quiet contrast to the moody sky above.
 There was no plan to take this shot. No perfect timing. Just a sudden feeling to pause and frame what I saw. Sometimes the most beautiful memories are the ones we don’t prepare for 📷✨">
             </div>
+
             <div class="item">
-                <img src="photo12.jpg" loading="lazy" alt="Framed by Silence 🌙✨" data-blog="
-Captured on my Samsung M15, this was one of those completely unexpected shots that felt perfectly composed without trying too hard.
+                <img src="photo12.jpg" loading="lazy" alt="Framed by Silence 🌙✨" data-blog="Captured on my Samsung M15, this was one of those completely unexpected shots that felt perfectly composed without trying too hard.
 The moon sat quietly in the deep blue sky, while the branches naturally framed it like a gentle outline. I didn’t plan the composition. I just looked up and felt the balance between darkness and light.
 The leaves turned into silhouettes, the sky became a soft canvas, and the moon stood there calm and confident. Sometimes composition is not about rules. It is about feeling the frame before pressing the shutter 📷🤍">
             </div>
@@ -327,53 +360,4 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             <div class="social-links">
                 <a href="https://wa.me/918157982581" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
                 <a href="https://www.instagram.com/_capturecrazejosh_?igsh=dGltNXVwMmV1eDdn" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://x.com/Capturecrazjosh" target="_blank" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
-                <a href="https://linkedin.com/in/joshua-joby-94748638b" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="mailto:capturecrazejosh@gmail.com" aria-label="Email"><i class="fa-regular fa-envelope"></i></a>
-            </div>
-            
-            <p style="font-size: 0.9rem; opacity: 0.8;">Turning ordinary scenes into compelling visual stories.</p>
-            <p class="footer-credits">© 2026 JOSHUA JOBY · UNSPOKEN CORNERS</p>
-        </div>
-    </footer>
-
-    <script>
-        const modal = document.getElementById("imageModal");
-        const modalImg = document.getElementById("modalImg");
-        const modalTitle = document.getElementById("modalTitle");
-        const modalDesc = document.getElementById("modalDescription");
-        const closeBtn = document.querySelector(".close-modal");
-        const backBtn = document.getElementById("modalBackBtn");
-
-        document.querySelectorAll('.item img').forEach(image => {
-            image.onclick = () => {
-                modal.style.display = "block"; // Changed from flex to block for container scrolling
-                modalImg.src = image.src;
-                modalTitle.innerText = image.alt;
-                modalDesc.innerText = image.getAttribute('data-blog') || "This moment was captured to preserve the beauty of the world.";
-                document.body.style.overflow = "hidden"; 
-                // Scroll modal to top when opening a new image
-                modal.scrollTop = 0;
-            }
-        });
-
-        const closeModal = () => {
-            modal.style.display = "none";
-            document.body.style.overflow = "auto";
-        };
-
-        closeBtn.onclick = closeModal;
-        backBtn.onclick = closeModal;
-        
-        window.onclick = (event) => {
-            if (event.target == modal) closeModal();
-        };
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") closeModal();
-        });
-    </script>
-
-</body>
-                </html>
-                
+                <a href="https://x.com/Capturecrazjosh" target="_blank" aria-label="
