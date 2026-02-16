@@ -88,12 +88,12 @@
         .about-section h3 { color: var(--accent-cyan); margin-bottom: 20px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
         .about-section p { font-size: clamp(1.1rem, 3vw, 1.25rem); color: var(--text-dim); }
 
-        /* --- 4. Bento Gallery --- */
+        /* --- 4. Bento Gallery Layout --- */
         .gallery-header { padding: 60px 0 30px; }
         .gallery {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: 220px;
+            grid-auto-rows: 240px; /* Fixed height per row for bento logic */
             gap: 20px;
             padding-bottom: 40px;
         }
@@ -101,28 +101,29 @@
         .item { 
             position: relative;
             overflow: hidden; 
-            border-radius: 15px; 
+            border-radius: 20px; 
             background: #111; 
             cursor: pointer; 
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: var(--transition);
         }
         .item img { 
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
-            filter: brightness(0.8); 
+            filter: brightness(0.7); 
             transition: var(--transition); 
         }
-        .item:hover img { filter: brightness(1); transform: scale(1.04); }
+        .item:hover { border-color: var(--accent-cyan); }
+        .item:hover img { filter: brightness(1); transform: scale(1.05); }
     
-        /* Bento Grid logic */
-        .bento-large { grid-column: span 2; grid-row: span 2; }
-        .bento-tall { grid-row: span 2; }
-        .bento-wide { grid-column: span 2; }
+        /* Bento Logic - Defining how items span */
+        .bento-large { grid-column: span 2; grid-row: span 2; } /* Big square */
+        .bento-tall { grid-row: span 2; } /* Vertical rectangle */
+        .bento-wide { grid-column: span 2; } /* Horizontal rectangle */
 
-        @media (max-width: 900px) {
-            .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
-            .nav-bar { top: 15px; left: 15px; padding: 8px 15px; }
+        @media (max-width: 1000px) {
+            .gallery { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 600px) {
             .gallery { display: flex; flex-direction: column; }
@@ -154,9 +155,9 @@
 
         .modal-content {
             width: 100%;
-            max-height: 70vh;
+            max-height: 75vh;
             object-fit: contain;
-            border-radius: 4px;
+            border-radius: 12px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             margin-bottom: 30px;
             animation: fadeIn 0.4s ease;
@@ -228,12 +229,12 @@
         }
         .see-more-wrapper a:hover { background: #ffffff; color: #000000; transform: translateY(-3px); }
 
-        footer { padding: 80px 0 40px; text-align: center; background: rgba(0,0,0,0.4); }
+        footer { padding: 80px 0 40px; text-align: center; }
         .social-links { display: flex; justify-content: center; gap: 1.5em; margin: 30px 0; }
         .social-links a { color: var(--text-main); font-size: 1.5rem; transition: var(--transition); opacity: 0.7; }
         .social-links a:hover { color: var(--accent-cyan); transform: translateY(-5px); opacity: 1; }
-        .footer-logo { font-weight: 900; color: var(--accent-cyan); font-size: 1.8rem; margin-bottom: 15px; display: block; }
-        .footer-credits { color: var(--text-dim); font-size: 0.75rem; letter-spacing: 2px; margin-top: 30px; text-transform: uppercase; }
+        .footer-logo { font-weight: 900; color: var(--accent-cyan); font-size: 1.8rem; margin-bottom: 10px; display: block; }
+        .footer-credits { color: var(--text-dim); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -268,8 +269,7 @@
         
         <main class="gallery">
             <div class="item bento-large">
-                <img src="photo3.jpg" loading="lazy" alt="Roots That Remember" data-blog="Roots That Remember
-The forest didn’t feel silent—it felt watchful.
+                <img src="photo3.jpg" loading="lazy" alt="Roots That Remember" data-blog="The forest didn’t feel silent—it felt watchful.
 Twisted roots spread across the ground like veins, holding on to stories older than time. Standing there during our school tour, in the quiet afternoon light of Gunacave, it felt as if nature itself was breathing slowly around us.
 This tree, bent yet unbroken, felt deeply human—scarred, grounded, and still standing tall despite everything beneath it. The fog softened the chaos, turning tangled roots and branches into a calm rhythm. For a moment, the noise of friends, laughter, and schedules faded, and it was just this scene and me.
 Shot on Moto G85, this frame wasn’t planned. It was felt.
@@ -278,8 +278,7 @@ A reminder that even in confusion, there is strength in staying rooted.">
             </div>
 
             <div class="item bento-tall">
-                <img src="photo13.jpg" loading="lazy" alt="Whispers of Lavender" data-blog="Silent Details of Vagamon
-The photo was taken in Vagamon, a beautiful location with hills that speak of nature softly and showcase beauty in small forms. It was taken using a vivo y11, and what attracted me to this wildflower was not its size, but its presence.
+                <img src="photo13.jpg" loading="lazy" alt="Whispers of Lavender" data-blog="The photo was taken in Vagamon, a beautiful location with hills that speak of nature softly and showcase beauty in small forms. It was taken using a vivo y11, and what attracted me to this wildflower was not its size, but its presence.
 The soft purple bloom stood out gently against the dark, blurry background, creating a natural separation between the subject and the environment. I decided to keep the framing simple, giving the flower space to breathe. The shallow focus helps to emphasize the beauty of the textures on the flower, as each little piece has a story to tell.
 Vagamon has a way of slowness. In such an atmosphere, events like this take you by surprise. This was no instance of capturing the perfect flower shot; it was about celebrating an aspect that could easily pass one by.
 Through this image, I hoped to convey a sense of tranquility, emphasizing that sometimes it is the smallest details that create the greatest lasting impression, even when in a wide expanse.">
@@ -292,24 +291,22 @@ Shot on vivo Y11, this frame is less about architecture and more about feeling. 
             </div>
 
             <div class="item bento-wide">
-                <img src="photo5.jpg" loading="lazy" alt="Where the Road Slows You Down" data-blog="Where the Road Slows You Down
-On our school tour to Munnar, this road felt like a gentle pause in motion. Curving through endless tea plantations, it didn’t rush anywhere it invited you to slow down and look around. The green hills rolled quietly under a cloudy sky, each layer softer than the last.
+                <img src="photo5.jpg" loading="lazy" alt="Where the Road Slows You Down" data-blog="On our school tour to Munnar, this road felt like a gentle pause in motion. Curving through endless tea plantations, it didn’t rush anywhere it invited you to slow down and look around. The green hills rolled quietly under a cloudy sky, each layer softer than the last.
 Standing there, surrounded by tea gardens, the air felt cooler and lighter, carrying the calm that only mountains know. Laughter from friends echoed somewhere behind, but this moment stayed still, almost personal. It felt like the road was teaching us something simple: not every journey is about reaching fast—some are meant to be felt.
 Shot on vivo Y11, this frame holds more than a landscape.
 It holds a school day memory, fresh wind, and a bend in the road that made us stop and breathe.">
             </div>
 
             <div class="item">
-                <img src="photo6.jpg" loading="lazy" alt="Quiet Guardian of Light" data-blog="Quiet Guardian of Light
-Resting in a pool of soft artificial light, this little angel feels almost alive. The shadows wrap gently around its face, while the glow highlights every curve, every delicate detail. There is a sense of innocence here, mixed with calm, like a silent guardian watching over the room.
+                <img src="photo6.jpg" loading="lazy" alt="Quiet Guardian of Light" data-blog="Resting in a pool of soft artificial light, this little angel feels almost alive. The shadows wrap gently around its face, while the glow highlights every curve, every delicate detail. There is a sense of innocence here, mixed with calm, like a silent guardian watching over the room.
 Captured in a simple studio setup at home, this decor piece becomes more than an object. It feels thoughtful, almost human, as if it is listening rather than speaking. The darkness around it gives space for emotion, letting the light tell its own story. Moments like this remind us that beauty does not always need grand places. Sometimes it lives quietly on a shelf, waiting to be noticed.
 Shot on vivo Y11, this frame is about patience and observation. A small setup, a controlled light, and a peaceful subject coming together to create a gentle mood.">
             </div>
 
             <div class="item bento-tall">
-                <img src="photo2.jpg" loading="lazy" alt="Rain Interrupted Ride 🌧️🚴‍♂️" data-blog="In the middle of our cycle ride around Kodaikanal Lake, the sky suddenly changed its mood. What started as a normal school tour moment turned into something cinematic. The rain poured without warning, and we had no choice but to stop riding.
-That’s when I noticed this quiet wooden structure standing in the lake, almost like it was waiting for the rain. The dark clouds above, the ripples on the water, the soft mist in the background everything felt still yet alive.
-Captured on my Moto G85, this wasn’t a planned shot. It was just a pause between laughter, wet roads, and racing friends. Sometimes the best frames come when life tells you to slow down for a minute 🌫️🏡✨">
+                <img src="photo2.jpg" loading="lazy" alt="Rain Interrupted Ride 🌧️🚴‍♂️" data-blog="Resting in a pool of soft artificial light, this little angel feels almost alive. The shadows wrap gently around its face, while the glow highlights every curve, every delicate detail. There is a sense of innocence here, mixed with calm, like a silent guardian watching over the room.
+Captured in a simple studio setup at home, this decor piece becomes more than an object. It feels thoughtful, almost human, as if it is listening rather than speaking. The darkness around it gives space for emotion, letting the light tell its own story. Moments like this remind us that beauty does not always need grand places. Sometimes it lives quietly on a shelf, waiting to be noticed.
+Shot on vivo Y11, this frame is about patience and observation. A small setup, a controlled light, and a peaceful subject coming together to create a gentle mood.">
             </div>
 
             <div class="item">
@@ -358,6 +355,5 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             <p style="color: var(--accent-cyan); font-weight: 700; letter-spacing: 1px;">CONNECT WITH ME</p>
             
             <div class="social-links">
-                <a href="https://wa.me/918157982581" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-                <a href="https://www.instagram.com/_capturecrazejosh_?igsh=dGltNXVwMmV1eDdn" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://x.com/Capturecrazjosh" target="_blank" aria-label="
+                <a href="https://wa.me/918157982581" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://www.instagram.com/_capturecrazejosh_" target="_blank"><i class="fa-brands fa-i
