@@ -934,3 +934,133 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
     </script>
 </body>
 </html>
+<!-- ONLY showing CHANGED parts merged into your original -->
+
+<!-- ✅ CSS FIX (replace these values inside your style) -->
+<style>
+.explanation-section {
+    height: 250vh; /* reduced from 400vh */
+}
+
+.about-section { 
+    padding: 120px 0; /* reduced from 200px */
+}
+</style><script>
+// ================================
+// CUSTOM CURSOR (UNCHANGED)
+// ================================
+
+
+// ================================
+// REALISTIC LEAF ANIMATION
+// ================================
+const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+
+// Vertical fall (scroll controlled)
+gsap.to(".falling-leaf-svg", {
+    y: () => totalScroll + 200,
+    ease: "none",
+    scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.5
+    }
+});
+
+// Natural side drift
+gsap.to(".falling-leaf-svg", {
+    x: "+=80",
+    rotation: "+=120",
+    duration: 2.5,
+    ease: "sine.inOut",
+    yoyo: true,
+    repeat: -1
+});
+
+// Small wobble
+gsap.to(".falling-leaf-svg", {
+    x: "+=20",
+    rotation: "+=30",
+    duration: 1.2,
+    ease: "sine.inOut",
+    yoyo: true,
+    repeat: -1
+});
+
+// Subtle blur for realism
+gsap.to(".falling-leaf-svg", {
+    filter: "blur(1px)",
+    duration: 2,
+    yoyo: true,
+    repeat: -1,
+    ease: "sine.inOut"
+});
+
+
+// ================================
+// MODAL LOGIC (UPDATED)
+// ================================
+const modal = document.getElementById("imageModal");
+const modalImg = document.getElementById("modalImg");
+const modalTitle = document.getElementById("modalTitle");
+const modalDesc = document.getElementById("modalDescription");
+const closeBtn = document.querySelector(".close-modal");
+const backBtn = document.getElementById("modalBackBtn");
+
+document.querySelectorAll('.item').forEach(item => {
+    item.onclick = () => {
+        const img = item.querySelector('img');
+
+        modal.style.display = "block";
+        void modal.offsetWidth;
+
+        setTimeout(() => { modal.classList.add("active"); }, 10);
+
+        modalImg.src = img.src;
+        modalTitle.innerText = img.alt;
+
+        // ✍️ TYPEWRITER EFFECT
+        const text = img.getAttribute('data-blog') || "This moment was captured beautifully.";
+        modalDesc.innerText = "";
+
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                modalDesc.innerText += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 15);
+            }
+        }
+        typeWriter();
+
+        // ✨ Fade animation
+        gsap.fromTo(".modal-blog", 
+            { opacity: 0, y: 40 }, 
+            { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
+        );
+
+        document.body.style.overflow = "hidden";
+        modal.scrollTop = 0;
+    }
+});
+
+const closeModal = () => {
+    modal.classList.remove("active");
+    setTimeout(() => {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
+    }, 600);
+};
+
+closeBtn.onclick = closeModal;
+backBtn.onclick = closeModal;
+
+window.onclick = (event) => { 
+    if (event.target == modal) closeModal(); 
+};
+
+document.addEventListener('keydown', (e) => { 
+    if (e.key === "Escape") closeModal(); 
+});
+</script>
