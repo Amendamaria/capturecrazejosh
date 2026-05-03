@@ -17,7 +17,7 @@
             --transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
         /* Smooth Scroll & Custom Scrollbar */
-        html { scroll-behavior: auto; }
+        html { scroll-behavior: auto; /* Let GSAP handle smoothness if needed, or keep auto for standard ScrollTrigger */ }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-edge); }
         ::-webkit-scrollbar-thumb { 
@@ -26,7 +26,7 @@
             transition: var(--transition);
         }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; /* Enforce no default cursor */ }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Hide default cursor */ }
         
         body {
             background: var(--bg-edge);
@@ -43,7 +43,7 @@
             background: var(--accent-cyan);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 9999999; /* Ensure it stays above everything, including modals */
+            z-index: 10000;
             transform: translate(-50%, -50%);
             box-shadow: 0 0 10px var(--accent-cyan), 0 0 20px var(--accent-cyan);
             transition: width 0.3s, height 0.3s, background 0.3s;
@@ -55,7 +55,7 @@
             border: 1px solid rgba(0, 210, 255, 0.5);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 9999998; /* Under cursor, but above modal */
+            z-index: 9999;
             transform: translate(-50%, -50%);
             transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
         }
@@ -163,7 +163,7 @@
             0% { background-position: 0% 50%; }
             100% { background-position: 100% 50%; }
         }
-        /* Leaf and Droplet Elements */
+        /* Leaf Elements */
         .nature-scene {
             position: absolute;
             top: 15vh;
@@ -175,7 +175,7 @@
             opacity: 0.8;
         }
         
-        .leaf-svg {
+        .main-leaf-svg {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -184,12 +184,12 @@
             height: 250px;
             filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
         }
-        .droplet-svg {
+        .falling-leaf-svg {
             position: absolute;
             top: 55%;
             left: 38%;
-            width: 15px;
-            height: 25px;
+            width: 20px;
+            height: 30px;
             filter: drop-shadow(0 0 10px var(--accent-cyan)) drop-shadow(0 0 20px rgba(0,210,255,0.6));
             z-index: 10;
         }
@@ -281,6 +281,7 @@
             border: 1px solid rgba(255,255,255,0.05);
             transition: border-color 0.6s ease;
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            /* Important for GSAP parallax and stagger */
             will-change: transform;
         }
         .item img { 
@@ -289,7 +290,7 @@
             object-fit: cover; 
             filter: brightness(0.4) grayscale(50%); 
             transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); 
-            transform: scale(1.05); 
+            transform: scale(1.05); /* Slight initial scale for hover effect */
         }
         
         .item::after {
@@ -362,13 +363,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(2, 2, 2, 0.96); /* Darker fade for cinematic focus */
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
             overflow-y: auto;
-            padding: 80px 20px 60px;
+            padding: 60px 20px;
             opacity: 0;
-            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
         .modal.active { opacity: 1; }
         .modal-container {
@@ -377,16 +378,23 @@
             align-items: center;
             max-width: 1200px;
             margin: 0 auto;
+            transform: scale(0.95) translateY(20px);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition-delay: 0.1s;
+        }
+        .modal.active .modal-container {
+            transform: scale(1) translateY(0);
+            opacity: 1;
         }
         .modal-content {
             width: 100%;
             max-height: 80vh;
             object-fit: contain;
             border-radius: 12px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 50px rgba(0,210,255,0.05);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 50px rgba(0,210,255,0.1);
             margin-bottom: 60px;
             border: 1px solid rgba(255,255,255,0.05);
-            transform-origin: center center;
         }
         .modal-blog {
             width: 100%;
@@ -403,17 +411,14 @@
             background: linear-gradient(to right, #fff, var(--accent-cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            /* Will be animated via GSAP */
         }
         .modal-blog p {
-            color: rgba(255,255,255,0.85);
-            font-size: 1.25rem;
+            color: rgba(255,255,255,0.8);
+            font-size: 1.2rem;
             font-weight: 300;
             margin-bottom: 50px;
             white-space: pre-line;
-            line-height: 2;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            /* Will be animated via GSAP */
+            line-height: 1.9;
         }
         .back-btn {
             background: rgba(255,255,255,0.05);
@@ -540,8 +545,8 @@
             
             <!-- Cinematic Nature Elements -->
             <div class="nature-scene">
-                <!-- Glowing Leaf -->
-                <svg class="leaf-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Glowing Main Leaf -->
+                <svg class="main-leaf-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                     <path d="M50 95 C 20 80, 5 40, 40 5 C 80 20, 95 60, 50 95 Z" fill="none" stroke="rgba(0, 210, 255, 0.4)" stroke-width="0.5" />
                     <path d="M40 5 C 45 40, 48 70, 50 95" fill="none" stroke="rgba(0, 210, 255, 0.2)" stroke-width="0.5" />
                     <!-- Veins -->
@@ -552,14 +557,13 @@
                     <path d="M46 35 Q 65 45 75 60" fill="none" stroke="rgba(0, 210, 255, 0.15)" stroke-width="0.5" />
                     <path d="M48 55 Q 60 65 65 80" fill="none" stroke="rgba(0, 210, 255, 0.15)" stroke-width="0.5" />
                 </svg>
-                <!-- Water Droplet -->
-                <svg class="droplet-svg" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 0 C 10 0, 0 15, 0 20 A 10 10 0 0 0 20 20 C 20 15, 10 0, 10 0 Z" fill="url(#dropletGradient)" />
+                <!-- Falling Small Leaf -->
+                <svg class="falling-leaf-svg" viewBox="0 0 30 40" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 0 C 30 10, 30 30, 15 40 C 0 30, 0 10, 15 0 Z" fill="url(#leafGradient)" />
                     <defs>
-                        <linearGradient id="dropletGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
-                            <stop offset="50%" stop-color="#00D2FF" stop-opacity="0.8" />
-                            <stop offset="100%" stop-color="#9D50BB" stop-opacity="0.6" />
+                        <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#00D2FF" stop-opacity="0.9" />
+                            <stop offset="100%" stop-color="#9D50BB" stop-opacity="0.8" />
                         </linearGradient>
                     </defs>
                 </svg>
@@ -705,7 +709,7 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
     </div>
     <footer id="contact">
         <div class="container footer-content">
-            <span class="footer-logo">capturecrazejosh.</span>
+            <span class="footer-logo">Capturecrazejosh.</span>
             <p style="color: var(--text-dim); font-weight: 700; letter-spacing: 4px; font-size: 0.85rem; margin-top: 30px;">CONNECT WITH ME</p>
             
             <div class="social-links">
@@ -754,7 +758,7 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
                 follower.classList.remove('active');
             });
         });
-        // --- 1. Initial Load Animations & Droplet Sequence ---
+        // --- 1. Initial Load Animations & Leaf Sequence ---
         const tlLoad = gsap.timeline();
         
         // UI elements fade in
@@ -762,28 +766,28 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
               .from(".hero-tag", { y: 30, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.8")
               .from(".hero-title", { y: 50, opacity: 0, duration: 1.2, ease: "power3.out", filter: "blur(10px)" }, "-=0.8")
               .from(".hero-subtitle", { y: 30, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.8")
-              .from(".leaf-svg", { opacity: 0, scale: 0.8, rotation: 15, duration: 2, ease: "power2.out" }, "-=1");
-        // Droplet initial animation: scales up on the leaf, then drops slightly
-        tlLoad.fromTo(".droplet-svg", 
-            { scale: 0, opacity: 0, y: -20 },
-            { scale: 1, opacity: 1, y: 0, duration: 1.5, ease: "elastic.out(1, 0.5)" },
+              .from(".main-leaf-svg", { opacity: 0, scale: 0.8, rotation: 15, duration: 2, ease: "power2.out" }, "-=1");
+        // Small leaf initial animation: fades in on the main leaf, then drops slightly
+        tlLoad.fromTo(".falling-leaf-svg", 
+            { scale: 0, opacity: 0, y: -20, rotation: -45 },
+            { scale: 1, opacity: 1, y: 0, rotation: 0, duration: 1.5, ease: "elastic.out(1, 0.5)" },
             "-=1"
         )
-        // Simulate a heavy drop detaching
-        .to(".droplet-svg", {
+        // Simulate a leaf detaching
+        .to(".falling-leaf-svg", {
             y: 40,
-            scaleY: 1.2,
-            scaleX: 0.8,
+            rotation: 15,
             duration: 0.8,
             ease: "power2.inOut"
         });
-        // --- 2. Scroll-Linked Droplet Animation ---
-        // As user scrolls the whole page, the droplet travels downwards and wobbles
+        // --- 2. Scroll-Linked Leaf Animation ---
+        // As user scrolls the whole page, the small leaf travels downwards and wobbles
         const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
         
-        gsap.to(".droplet-svg", {
+        gsap.to(".falling-leaf-svg", {
             y: () => totalScroll + 200, // Move it down the entire page height
-            x: "random(-100, 100)", // Slight random wobble as it falls
+            x: "random(-150, 150)", // Drift horizontally
+            rotation: "random(-180, 180)", // Spin randomly
             ease: "none",
             scrollTrigger: {
                 trigger: "body",
@@ -792,13 +796,14 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
                 scrub: 1.5 // Smooth catch-up
             }
         });
-        // Add a gentle rotation wobble to the droplet while scrolling
-        gsap.to(".droplet-svg", {
-            rotation: 15,
+        // Add a continuous gentle sway to the leaf while scrolling
+        gsap.to(".falling-leaf-svg", {
+            rotation: "+=45",
+            x: "+=30",
             ease: "sine.inOut",
             yoyo: true,
             repeat: -1,
-            duration: 2
+            duration: 3
         });
         // --- 3. Apple-Style Sticky Text Reveal ---
         const tlScroll = gsap.timeline({
@@ -900,57 +905,26 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
         const modalDesc = document.getElementById("modalDescription");
         const closeBtn = document.querySelector(".close-modal");
         const backBtn = document.getElementById("modalBackBtn");
-        let modalAnimation;
         document.querySelectorAll('.item').forEach(item => {
             item.onclick = () => {
                 const img = item.querySelector('img');
+                modal.style.display = "block";
+                void modal.offsetWidth; 
+                setTimeout(() => { modal.classList.add("active"); }, 10);
                 
                 modalImg.src = img.src;
                 modalTitle.innerText = img.alt;
                 modalDesc.innerText = img.getAttribute('data-blog') || "This moment was captured to preserve the beauty of the world.";
-                
-                modal.style.display = "block";
                 document.body.style.overflow = "hidden"; 
                 modal.scrollTop = 0;
-                
-                // Allow browser to render display:block before adding opacity class
-                requestAnimationFrame(() => {
-                    modal.classList.add("active");
-                    
-                    // Cinematic image zoom and blur effect
-                    gsap.fromTo(modalImg, 
-                        { scale: 0.98, filter: "blur(15px)", opacity: 0 }, 
-                        { scale: 1, filter: "blur(0px)", opacity: 1, duration: 1.5, ease: "power3.out" }
-                    );
-                    
-                    // Continuous slow zoom for cinematic feel
-                    if(modalAnimation) modalAnimation.kill();
-                    modalAnimation = gsap.to(modalImg, { 
-                        scale: 1.05, 
-                        duration: 20, 
-                        ease: "none", 
-                        delay: 1.5 
-                    });
-                    // Cinematic text reveal (slide up and fade in with blur)
-                    gsap.fromTo([modalTitle, modalDesc, backBtn],
-                        { y: 40, opacity: 0, filter: "blur(10px)" },
-                        { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.4 }
-                    );
-                });
             }
         });
         const closeModal = () => {
             modal.classList.remove("active");
-            if(modalAnimation) modalAnimation.kill();
-            
             setTimeout(() => {
                 modal.style.display = "none";
                 document.body.style.overflow = "auto";
-                
-                // Reset styles
-                gsap.set(modalImg, { clearProps: "all" });
-                gsap.set([modalTitle, modalDesc, backBtn], { clearProps: "all" });
-            }, 800); // Matches the modal transition time
+            }, 600); 
         };
         closeBtn.onclick = closeModal;
         backBtn.onclick = closeModal;
