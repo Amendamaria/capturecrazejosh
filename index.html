@@ -16,19 +16,6 @@
             --text-dim: #a0a0a0;
             --transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
-       <style>
-.reel-section{
-  padding:60px 20px;
-  text-align:center;
-}
-
-.reel-section video{
-  width:100%;
-  max-width:400px;
-  border-radius:24px;
-  box-shadow:0 10px 40px rgba(0,0,0,0.35);
-}
-</style>
         /* Smooth Scroll & Custom Scrollbar */
         html { scroll-behavior: auto; /* Let GSAP handle smoothness if needed, or keep auto for standard ScrollTrigger */ }
         ::-webkit-scrollbar { width: 8px; }
@@ -41,15 +28,7 @@
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Hide default cursor */ }
         
-        body 
-    <section class="reel-section">
-  <h2>Visual Story</h2>
-
-  <video autoplay muted loop playsinline controls>
-    <source src="videos/book reel 4k (1) (1).mp4" type="video/mp4">
-  </video>
-</section>
-    {
+        body {
             background: var(--bg-edge);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
@@ -184,6 +163,50 @@
             0% { background-position: 0% 50%; }
             100% { background-position: 100% 50%; }
         }
+        <!-- BOOK REEL SECTION -->
+<style>
+.reel-section{
+    padding:120px 20px;
+    text-align:center;
+    position:relative;
+    z-index:2;
+}
+
+.reel-section h2{
+    font-size:clamp(2rem,5vw,3.5rem);
+    margin-bottom:40px;
+    color:white;
+    font-weight:900;
+    letter-spacing:-2px;
+    background:linear-gradient(to right,#fff,#00D2FF);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.reel-section video{
+    width:100%;
+    max-width:420px;
+    border-radius:28px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    border:1px solid rgba(255,255,255,0.08);
+    transition:0.5s ease;
+}
+
+.reel-section video:hover{
+    transform:scale(1.02);
+    box-shadow:0 25px 80px rgba(0,210,255,0.2);
+}
+</style>
+
+<section class="reel-section">
+    <div class="container">
+        <h2>Book Reel</h2>
+
+        <video autoplay muted loop playsinline controls>
+            <source src="videos/book-reel.mp4" type="video/mp4">
+        </video>
+    </div>
+</section>
         /* Leaf Elements */
         .nature-scene {
             position: absolute;
