@@ -16,6 +16,7 @@
             --text-dim: #a0a0a0;
             --transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
+
         /* Smooth Scroll & Custom Scrollbar */
         html { scroll-behavior: auto; /* Let GSAP handle smoothness if needed, or keep auto for standard ScrollTrigger */ }
         ::-webkit-scrollbar { width: 8px; }
@@ -26,6 +27,7 @@
             transition: var(--transition);
         }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
+
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Hide default cursor */ }
         
         body {
@@ -35,6 +37,7 @@
             overflow-x: hidden;
             line-height: 1.6;
         }
+
         /* Custom Cursor */
         .cursor {
             position: fixed;
@@ -69,6 +72,7 @@
             border-color: rgba(157, 80, 187, 0.8);
             background: rgba(157, 80, 187, 0.1);
         }
+
         /* Ambient Background Glow */
         .ambient-bg {
             position: fixed;
@@ -77,7 +81,9 @@
             z-index: -2;
             pointer-events: none;
         }
+
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
+
         /* --- 1. Top Left Navigation --- */
         .nav-bar {
             position: fixed;
@@ -119,6 +125,7 @@
         }
         .nav-bar a:hover { opacity: 1; color: var(--accent-cyan); text-shadow: 0 0 10px rgba(0,210,255,0.5); }
         .nav-bar a:hover::after { width: 100%; }
+
         /* --- 2. Hero --- */
         .hero {
             height: 100vh;
@@ -132,6 +139,7 @@
             position: relative;
             z-index: 2;
         }
+
         .hero p { 
             color: var(--accent-cyan); 
             font-weight: 700; 
@@ -159,10 +167,12 @@
             font-weight: 300; 
             letter-spacing: -0.5px;
         }
+
         @keyframes gradientFlow {
             0% { background-position: 0% 50%; }
             100% { background-position: 100% 50%; }
         }
+
         /* Leaf Elements */
         .nature-scene {
             position: absolute;
@@ -184,6 +194,7 @@
             height: 250px;
             filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
         }
+
         .falling-leaf-svg {
             position: absolute;
             top: 55%;
@@ -193,9 +204,55 @@
             filter: drop-shadow(0 0 10px var(--accent-cyan)) drop-shadow(0 0 20px rgba(0,210,255,0.6));
             z-index: 10;
         }
+
+        /* --- Reel Section --- */
+        .reel-section {
+            padding: 100px 20px;
+            text-align: center;
+            background: linear-gradient(to bottom, transparent, rgba(0, 210, 255, 0.02), transparent);
+            position: relative;
+            z-index: 5;
+        }
+        .reel-header {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+            background: linear-gradient(to right, #fff, var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .reel-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 210, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            aspect-ratio: 16 / 9;
+        }
+        .reel-container:hover {
+            border-color: rgba(0, 210, 255, 0.4);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 210, 255, 0.2);
+            transform: translateY(-5px);
+        }
+        .reel-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 24px;
+        }
+
         /* Apple-Style Explanation Section */
         .explanation-section {
-            height: 400vh;
+            height: 250vh;
             position: relative;
             background-color: var(--bg-edge);
         }
@@ -223,9 +280,10 @@
         .text-1 { background: linear-gradient(135deg, #fff, #a0a0a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .text-2 { background: linear-gradient(135deg, var(--accent-cyan), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .text-3 { background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
         /* --- 3. About --- */
         .about-section { 
-            padding: 200px 0; 
+            padding: 120px 0; 
             background: linear-gradient(to bottom, transparent, rgba(0, 210, 255, 0.03)); 
             position: relative;
         }
@@ -261,6 +319,7 @@
             font-weight: 300;
         }
         .about-content strong { color: #fff; font-weight: 700; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
         /* --- 4. Bento Gallery Layout --- */
         .gallery-section { padding: 150px 0; position: relative; }
         .gallery-header { padding-bottom: 80px; text-align: center; }
@@ -273,6 +332,7 @@
             gap: 24px;
             padding-bottom: 80px;
         }
+
         .item { 
             position: relative;
             overflow: hidden; 
@@ -302,6 +362,7 @@
             transition: var(--transition);
             pointer-events: none;
         }
+
         .item-content {
             position: absolute;
             bottom: 30px;
@@ -313,6 +374,7 @@
             transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
             pointer-events: none;
         }
+
         .item-content h4 {
             color: #fff;
             font-size: 1.2rem;
@@ -327,6 +389,7 @@
             letter-spacing: 2px;
             font-weight: 700;
         }
+
         .item:hover { 
             border-color: rgba(0, 210, 255, 0.4); 
             box-shadow: 0 30px 60px rgba(0, 210, 255, 0.15), 0 0 20px rgba(0,210,255,0.1) inset;
@@ -345,6 +408,7 @@
         .bento-large { grid-column: span 2; grid-row: span 2; }
         .bento-tall { grid-row: span 2; }
         .bento-wide { grid-column: span 2; }
+
         @media (max-width: 1000px) {
             .gallery { grid-template-columns: repeat(2, 1fr); }
             .nature-scene { display: none; }
@@ -354,6 +418,7 @@
             .item { height: 400px; }
             .about-content { padding: 40px 20px; }
         }
+
         /* --- 5. Lightbox Modal --- */
         .modal {
             display: none;
@@ -371,7 +436,9 @@
             opacity: 0;
             transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
+
         .modal.active { opacity: 1; }
+
         .modal-container {
             display: flex;
             flex-direction: column;
@@ -383,10 +450,12 @@
             transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
             transition-delay: 0.1s;
         }
+
         .modal.active .modal-container {
             transform: scale(1) translateY(0);
             opacity: 1;
         }
+
         .modal-content {
             width: 100%;
             max-height: 80vh;
@@ -396,12 +465,14 @@
             margin-bottom: 60px;
             border: 1px solid rgba(255,255,255,0.05);
         }
+
         .modal-blog {
             width: 100%;
             max-width: 800px;
             text-align: center;
             padding-bottom: 80px;
         }
+
         .modal-blog h4 {
             color: #fff;
             margin-bottom: 30px;
@@ -412,6 +483,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .modal-blog p {
             color: rgba(255,255,255,0.8);
             font-size: 1.2rem;
@@ -420,6 +492,7 @@
             white-space: pre-line;
             line-height: 1.9;
         }
+
         .back-btn {
             background: rgba(255,255,255,0.05);
             color: #fff;
@@ -436,12 +509,14 @@
             gap: 15px;
             backdrop-filter: blur(10px);
         }
+
         .back-btn:hover { 
             background: #fff;
             color: #000;
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(255,255,255,0.2);
         }
+
         .close-modal {
             position: fixed;
             top: 40px;
@@ -468,6 +543,7 @@
             transform: rotate(90deg) scale(1.1);
             box-shadow: 0 0 20px var(--accent-purple);
         }
+
         /* --- 6. See More & Footer --- */
         .see-more-wrapper { text-align: center; padding: 120px 0; border-top: 1px solid rgba(255,255,255,0.02); }
         .see-more-btn {
@@ -489,8 +565,10 @@
             transition: height 0.4s ease;
             z-index: -1;
         }
+
         .see-more-btn:hover { color: #000000; transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,210,255,0.3); }
         .see-more-btn:hover::after { height: 100%; }
+
         footer { 
             padding: 150px 0 80px; 
             text-align: center; 
@@ -526,15 +604,19 @@
     </style>
 </head>
 <body>
+
     <!-- Custom Cursor -->
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
+
     <div class="ambient-bg"></div>
+
     <nav class="nav-bar">
         <a href="#home">Home</a>
         <a href="#about">About</a>
         <a href="#gallery">Gallery</a>
     </nav>
+
     <div class="container">
         <section id="home" class="hero">
             <div class="hero-content">
@@ -570,6 +652,15 @@
             </div>
         </section>
     </div>
+
+    <!-- REEL SECTION -->
+    <section id="reel" class="reel-section">
+        <h3 class="reel-header">Book Reel</h3>
+        <div class="reel-container">
+            <video src="videos/book-reel.mp4" autoplay muted loop playsinline controls></video>
+        </div>
+    </section>
+
     <!-- APPLE-STYLE SCROLL SECTION -->
     <section class="explanation-section">
         <div class="sticky-container">
@@ -578,6 +669,7 @@
             <h2 class="explain-text text-3">Every corner has a story waiting to be told.</h2>
         </div>
     </section>
+
     <section id="about" class="about-section">
         <div class="container about-content">
             <h3 class="about-title">About Me</h3>
@@ -591,6 +683,7 @@
             </p>
         </div>
     </section>
+
     <section id="gallery" class="gallery-section">
         <div class="container">
             <div class="gallery-header">
@@ -611,6 +704,7 @@ A reminder that even in confusion, there is strength in staying rooted.">
                         <p>Gunacave, Moto G85</p>
                     </div>
                 </div>
+
                 <div class="item bento-tall">
                     <img src="photo13.jpg" loading="lazy" alt="Whispers of Lavender" data-blog="The photo was taken in Vagamon, a beautiful location with hills that speak of nature softly and showcase beauty in small forms. It was taken using a vivo y11, and what attracted me to this wildflower was not its size, but its presence.
 The soft purple bloom stood out gently against the dark, blurry background, creating a natural separation between the subject and the environment. I decided to keep the framing simple, giving the flower space to breathe. The shallow focus helps to emphasize the beauty of the textures on the flower, as each little piece has a story to tell.
@@ -621,6 +715,7 @@ Through this image, I hoped to convey a sense of tranquility, emphasizing that s
                         <p>Vagamon, vivo Y11</p>
                     </div>
                 </div>
+
                 <div class="item">
                     <img src="photo11.jpg" loading="lazy" alt="Windows of Quiet Memories" data-blog="After school, on the way home, this monastery stood calm—unchanged, unhurried. The blue windows and doors felt like gentle pauses in time, holding years of silence, prayers, and footsteps of those who passed through before us. At Mannanam, the presence of St. Chavara feels close, not loud just steady, like a memory that never fades.
 The building didn’t ask for attention. It simply existed, clean and composed, letting the afternoon light rest on its white walls. Looking at it now, it brings back school-day thoughts bags on our shoulders, tired feet, and minds full of small dreams. Some places don’t speak they remind.
@@ -630,6 +725,7 @@ Shot on vivo Y11, this frame is less about architecture and more about feeling. 
                         <p>Mannanam, vivo Y11</p>
                     </div>
                 </div>
+
                 <div class="item bento-wide">
                     <img src="photo5.jpg" loading="lazy" alt="Where the Road Slows You Down" data-blog="On our school tour to Munnar, this road felt like a gentle pause in motion. Curving through endless tea plantations, it didn’t rush anywhere it invited you to slow down and look around. The green hills rolled quietly under a cloudy sky, each layer softer than the last.
 Standing there, surrounded by tea gardens, the air felt cooler and lighter, carrying the calm that only mountains know. Laughter from friends echoed somewhere behind, but this moment stayed still, almost personal. It felt like the road was teaching us something simple: not every journey is about reaching fast—some are meant to be felt.
@@ -640,6 +736,7 @@ It holds a school day memory, fresh wind, and a bend in the road that made us st
                         <p>Munnar, vivo Y11</p>
                     </div>
                 </div>
+
                 <div class="item">
                     <img src="photo6.jpg" loading="lazy" alt="Quiet Guardian of Light" data-blog="Resting in a pool of soft artificial light, this little angel feels almost alive. The shadows wrap gently around its face, while the glow highlights every curve, every delicate detail. There is a sense of innocence here, mixed with calm, like a silent guardian watching over the room.
 Captured in a simple studio setup at home, this decor piece becomes more than an object. It feels thoughtful, almost human, as if it is listening rather than speaking. The darkness around it gives space for emotion, letting the light tell its own story. Moments like this remind us that beauty does not always need grand places. Sometimes it lives quietly on a shelf, waiting to be noticed.
@@ -649,6 +746,7 @@ Shot on vivo Y11, this frame is about patience and observation. A small setup, a
                         <p>Studio, vivo Y11</p>
                     </div>
                 </div>
+
                 <div class="item bento-tall">
                     <img src="photo2.jpg" loading="lazy" alt="Rain Interrupted Ride 🌧️🚴♂️" data-blog="Resting in a pool of soft artificial light, this little angel feels almost alive. The shadows wrap gently around its face, while the glow highlights every curve, every delicate detail. There is a sense of innocence here, mixed with calm, like a silent guardian watching over the room.
 Captured in a simple studio setup at home, this decor piece becomes more than an object. It feels thoughtful, almost human, as if it is listening rather than speaking. The darkness around it gives space for emotion, letting the light tell its own story. Moments like this remind us that beauty does not always need grand places. Sometimes it lives quietly on a shelf, waiting to be noticed.
@@ -658,6 +756,7 @@ Shot on vivo Y11, this frame is about patience and observation. A small setup, a
                         <p>vivo Y11</p>
                     </div>
                 </div>
+
                 <div class="item">
                     <img src="photo1.jpg" loading="lazy" alt="Sunset Silhouette" data-blog="Image captured at Paruthumpara View Point at sunset, captured with a Moto G85 mobile phone. No pre-planned plan, just a random moment of convergence of light, sky, silence.
 With the sun sinking below the horizon, the clouds formed a layered pattern in the sky. They moved from a warm gold color to dark shadows. The contrast was strong and peaceful, a breath before nightfall. I saw two people on the outskirts of the hillside, and they became the grounding element for the background. Keeping them in shadows was important, as details might have taken away from the emotional impact.
@@ -668,6 +767,7 @@ The fact that I used my mobile to shoot reminded me that photography is not abou
                         <p>Paruthumpara, Moto G85</p>
                     </div>
                 </div>
+
                 <div class="item">
                     <img src="photo4.jpg" loading="lazy" alt="Before the Rain Speaks 🌥️🌊" data-blog="Captured on my Vivo Y11 during our school tour, this was one of those unexpected moments that didn’t ask for attention but deserved it.
 At Mattupetti Dam, the sky slowly turned heavy with dark clouds. The lake stayed calm, almost like it was holding its breath. The colorful boats resting by the shore added a quiet contrast to the moody sky above.
@@ -677,6 +777,7 @@ There was no plan to take this shot. No perfect timing. Just a sudden feeling to
                         <p>Mattupetti Dam, vivo Y11</p>
                     </div>
                 </div>
+
                 <div class="item">
                     <img src="photo12.jpg" loading="lazy" alt="Framed by Silence 🌙✨" data-blog="Captured on my Samsung M15, this was one of those completely unexpected shots that felt perfectly composed without trying too hard.
 The moon sat quietly in the deep blue sky, while the branches naturally framed it like a gentle outline. I didn’t plan the composition. I just looked up and felt the balance between darkness and light.
@@ -687,6 +788,7 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
                     </div>
                 </div>
             </main>
+
             <div class="see-more-wrapper">
                 <p style="opacity: 0.5; margin-bottom: 30px; font-size: 14px; letter-spacing: 3px; text-transform: uppercase;">Discover more unspoken stories</p>
                 <a href="https://drive.google.com/drive/folders/1ZpGchlmHQU6h1qaQZlySL6o0M57p5RIj" target="_blank" class="see-more-btn">
@@ -695,6 +797,7 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             </div>
         </div>
     </section>
+
     <!-- Modal -->
     <div id="imageModal" class="modal">
         <span class="close-modal"><i class="fa-solid fa-xmark"></i></span>
@@ -707,9 +810,10 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             </div>
         </div>
     </div>
+
     <footer id="contact">
         <div class="container footer-content">
-            <span class="footer-logo">Capturecrazejosh.</span>
+            <span class="footer-logo">JS.</span>
             <p style="color: var(--text-dim); font-weight: 700; letter-spacing: 4px; font-size: 0.85rem; margin-top: 30px;">CONNECT WITH ME</p>
             
             <div class="social-links">
@@ -724,16 +828,20 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             <p class="footer-credits">© 2026 JOSHUA JOBY · UNSPOKEN CORNERS</p>
         </div>
     </footer>
+
     <!-- GSAP CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
     <script>
         gsap.registerPlugin(ScrollTrigger);
+
         // --- Custom Cursor Logic ---
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');
         let posX = 0, posY = 0;
         let mouseX = 0, mouseY = 0;
+
         // Use GSAP ticker for smooth cursor follow
         gsap.ticker.add(() => {
             posX += (mouseX - posX) / 6;
@@ -742,10 +850,12 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             gsap.set(cursor, { x: mouseX, y: mouseY });
             gsap.set(follower, { x: posX, y: posY });
         });
+
         document.addEventListener("mousemove", (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
+
         // Hover effects for cursor
         const hoverElements = document.querySelectorAll('a, button, .item, .close-modal');
         hoverElements.forEach(el => {
@@ -758,6 +868,8 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
                 follower.classList.remove('active');
             });
         });
+
+
         // --- 1. Initial Load Animations & Leaf Sequence ---
         const tlLoad = gsap.timeline();
         
@@ -767,6 +879,7 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
               .from(".hero-title", { y: 50, opacity: 0, duration: 1.2, ease: "power3.out", filter: "blur(10px)" }, "-=0.8")
               .from(".hero-subtitle", { y: 30, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.8")
               .from(".main-leaf-svg", { opacity: 0, scale: 0.8, rotation: 15, duration: 2, ease: "power2.out" }, "-=1");
+
         // Small leaf initial animation: fades in on the main leaf, then drops slightly
         tlLoad.fromTo(".falling-leaf-svg", 
             { scale: 0, opacity: 0, y: -20, rotation: -45 },
@@ -780,31 +893,51 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             duration: 0.8,
             ease: "power2.inOut"
         });
+
         // --- 2. Scroll-Linked Leaf Animation ---
-        // As user scrolls the whole page, the small leaf travels downwards and wobbles
         const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-        
+
+        // Vertical fall (scroll controlled)
         gsap.to(".falling-leaf-svg", {
-            y: () => totalScroll + 200, // Move it down the entire page height
-            x: "random(-150, 150)", // Drift horizontally
-            rotation: "random(-180, 180)", // Spin randomly
+            y: () => totalScroll + 200,
             ease: "none",
             scrollTrigger: {
                 trigger: "body",
                 start: "top top",
                 end: "bottom bottom",
-                scrub: 1.5 // Smooth catch-up
+                scrub: 1.5
             }
         });
-        // Add a continuous gentle sway to the leaf while scrolling
+
+        // Natural side drift
         gsap.to(".falling-leaf-svg", {
-            rotation: "+=45",
-            x: "+=30",
+            x: "+=80",
+            rotation: "+=120",
+            duration: 2.5,
             ease: "sine.inOut",
             yoyo: true,
-            repeat: -1,
-            duration: 3
+            repeat: -1
         });
+
+        // Small wobble
+        gsap.to(".falling-leaf-svg", {
+            x: "+=20",
+            rotation: "+=30",
+            duration: 1.2,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1
+        });
+
+        // Subtle blur for realism
+        gsap.to(".falling-leaf-svg", {
+            filter: "blur(1px)",
+            duration: 2,
+            yoyo: true,
+            repeat: -1,
+            ease: "sine.inOut"
+        });
+
         // --- 3. Apple-Style Sticky Text Reveal ---
         const tlScroll = gsap.timeline({
             scrollTrigger: {
@@ -814,12 +947,15 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
                 scrub: 1,
             }
         });
+
         tlScroll.to(".text-1", { opacity: 1, y: -20, duration: 1, filter: "blur(0px)" })
                 .to(".text-1", { opacity: 0, scale: 1.1, y: -50, duration: 1, filter: "blur(10px)" }, "+=0.5")
                 .to(".text-2", { opacity: 1, y: -20, duration: 1, filter: "blur(0px)" })
                 .to(".text-2", { opacity: 0, scale: 1.1, y: -50, duration: 1, filter: "blur(10px)" }, "+=0.5")
                 .to(".text-3", { opacity: 1, y: -20, duration: 1, filter: "blur(0px)" })
                 .to(".text-3", { opacity: 0, scale: 1.1, y: -50, duration: 1, filter: "blur(10px)" }, "+=0.5");
+
+
         // --- 4. Cinematic About Section Reveal ---
         const tlAbout = gsap.timeline({
             scrollTrigger: {
@@ -847,6 +983,8 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             stagger: 0.15,
             ease: "power3.out"
         }, "-=0.5");
+
+
         // --- 5. Gallery Section Parallax & Stagger ---
         gsap.from(".gallery-header", {
             scrollTrigger: {
@@ -858,6 +996,7 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             duration: 1.2,
             ease: "power3.out"
         });
+
         // Staggered reveal for grid items
         gsap.from(".item", {
             scrollTrigger: {
@@ -871,6 +1010,7 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             ease: "power4.out",
             filter: "blur(5px)"
         });
+
         // Parallax effect on scroll for gallery items to give 3D depth
         gsap.utils.toArray('.item').forEach((item, i) => {
             // Give different speeds based on index to create depth
@@ -886,6 +1026,8 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
                 }
             });
         });
+
+
         // --- 6. Footer Reveal ---
         gsap.from(".footer-content > *", {
             scrollTrigger: {
@@ -898,6 +1040,8 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
             stagger: 0.1,
             ease: "power3.out"
         });
+
+
         // --- Modal Logic ---
         const modal = document.getElementById("imageModal");
         const modalImg = document.getElementById("modalImg");
@@ -905,162 +1049,63 @@ The leaves turned into silhouettes, the sky became a soft canvas, and the moon s
         const modalDesc = document.getElementById("modalDescription");
         const closeBtn = document.querySelector(".close-modal");
         const backBtn = document.getElementById("modalBackBtn");
+
         document.querySelectorAll('.item').forEach(item => {
             item.onclick = () => {
                 const img = item.querySelector('img');
+
                 modal.style.display = "block";
-                void modal.offsetWidth; 
+                void modal.offsetWidth;
+
                 setTimeout(() => { modal.classList.add("active"); }, 10);
-                
+
                 modalImg.src = img.src;
                 modalTitle.innerText = img.alt;
-                modalDesc.innerText = img.getAttribute('data-blog') || "This moment was captured to preserve the beauty of the world.";
-                document.body.style.overflow = "hidden"; 
+
+                // TYPEWRITER EFFECT
+                const text = img.getAttribute('data-blog') || "This moment was captured beautifully.";
+                modalDesc.innerText = "";
+
+                let i = 0;
+                function typeWriter() {
+                    if (i < text.length) {
+                        modalDesc.innerText += text.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 15);
+                    }
+                }
+                typeWriter();
+
+                // Fade animation
+                gsap.fromTo(".modal-blog", 
+                    { opacity: 0, y: 40 }, 
+                    { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
+                );
+
+                document.body.style.overflow = "hidden";
                 modal.scrollTop = 0;
             }
         });
+
         const closeModal = () => {
             modal.classList.remove("active");
             setTimeout(() => {
                 modal.style.display = "none";
                 document.body.style.overflow = "auto";
-            }, 600); 
+            }, 600);
         };
+
         closeBtn.onclick = closeModal;
         backBtn.onclick = closeModal;
-        
-        window.onclick = (event) => { if (event.target == modal) closeModal(); };
-        document.addEventListener('keydown', (e) => { if (e.key === "Escape") closeModal(); });
+
+        window.onclick = (event) => { 
+            if (event.target == modal) closeModal(); 
+        };
+
+        document.addEventListener('keydown', (e) => { 
+            if (e.key === "Escape") closeModal(); 
+        });
+
     </script>
 </body>
 </html>
-<!-- ONLY showing CHANGED parts merged into your original -->
-
-<!-- ✅ CSS FIX (replace these values inside your style) -->
-<style>
-.explanation-section {
-    height: 250vh; /* reduced from 400vh */
-}
-
-.about-section { 
-    padding: 120px 0; /* reduced from 200px */
-}
-</style><script>
-// ================================
-// CUSTOM CURSOR (UNCHANGED)
-// ================================
-
-
-// ================================
-// REALISTIC LEAF ANIMATION
-// ================================
-const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-
-// Vertical fall (scroll controlled)
-gsap.to(".falling-leaf-svg", {
-    y: () => totalScroll + 200,
-    ease: "none",
-    scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.5
-    }
-});
-
-// Natural side drift
-gsap.to(".falling-leaf-svg", {
-    x: "+=80",
-    rotation: "+=120",
-    duration: 2.5,
-    ease: "sine.inOut",
-    yoyo: true,
-    repeat: -1
-});
-
-// Small wobble
-gsap.to(".falling-leaf-svg", {
-    x: "+=20",
-    rotation: "+=30",
-    duration: 1.2,
-    ease: "sine.inOut",
-    yoyo: true,
-    repeat: -1
-});
-
-// Subtle blur for realism
-gsap.to(".falling-leaf-svg", {
-    filter: "blur(1px)",
-    duration: 2,
-    yoyo: true,
-    repeat: -1,
-    ease: "sine.inOut"
-});
-
-
-// ================================
-// MODAL LOGIC (UPDATED)
-// ================================
-const modal = document.getElementById("imageModal");
-const modalImg = document.getElementById("modalImg");
-const modalTitle = document.getElementById("modalTitle");
-const modalDesc = document.getElementById("modalDescription");
-const closeBtn = document.querySelector(".close-modal");
-const backBtn = document.getElementById("modalBackBtn");
-
-document.querySelectorAll('.item').forEach(item => {
-    item.onclick = () => {
-        const img = item.querySelector('img');
-
-        modal.style.display = "block";
-        void modal.offsetWidth;
-
-        setTimeout(() => { modal.classList.add("active"); }, 10);
-
-        modalImg.src = img.src;
-        modalTitle.innerText = img.alt;
-
-        // ✍️ TYPEWRITER EFFECT
-        const text = img.getAttribute('data-blog') || "This moment was captured beautifully.";
-        modalDesc.innerText = "";
-
-        let i = 0;
-        function typeWriter() {
-            if (i < text.length) {
-                modalDesc.innerText += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, 15);
-            }
-        }
-        typeWriter();
-
-        // ✨ Fade animation
-        gsap.fromTo(".modal-blog", 
-            { opacity: 0, y: 40 }, 
-            { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
-        );
-
-        document.body.style.overflow = "hidden";
-        modal.scrollTop = 0;
-    }
-});
-
-const closeModal = () => {
-    modal.classList.remove("active");
-    setTimeout(() => {
-        modal.style.display = "none";
-        document.body.style.overflow = "auto";
-    }, 600);
-};
-
-closeBtn.onclick = closeModal;
-backBtn.onclick = closeModal;
-
-window.onclick = (event) => { 
-    if (event.target == modal) closeModal(); 
-};
-
-document.addEventListener('keydown', (e) => { 
-    if (e.key === "Escape") closeModal(); 
-});
-</script>
