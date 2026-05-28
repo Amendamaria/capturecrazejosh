@@ -324,3 +324,32 @@ gsap.registerPlugin(ScrollTrigger);
         
         window.onclick = (event) => { if (event.target == modal) closeModal(); };
         document.addEventListener('keydown', (e) => { if (e.key === "Escape") closeModal(); });
+
+        // --- Theme Toggle Logic ---
+        const themeToggle = document.getElementById("themeToggle");
+        const themeIcon = themeToggle.querySelector("i");
+
+        // Check local storage for preference
+        if (localStorage.getItem("theme") === "light") {
+            document.body.classList.add("light-mode");
+            themeIcon.classList.replace("fa-moon", "fa-sun");
+        }
+
+        themeToggle.addEventListener("click", () => {
+            document.body.classList.toggle("light-mode");
+            const isLight = document.body.classList.contains("light-mode");
+            
+            if (isLight) {
+                themeIcon.classList.replace("fa-moon", "fa-sun");
+                localStorage.setItem("theme", "light");
+            } else {
+                themeIcon.classList.replace("fa-sun", "fa-moon");
+                localStorage.setItem("theme", "dark");
+            }
+            
+            // GSAP micro-animation for theme toggle button
+            gsap.fromTo(themeIcon, 
+                { rotation: 0, scale: 0.5 }, 
+                { rotation: 360, scale: 1, duration: 0.5, ease: "back.out(1.5)" }
+            );
+        });
