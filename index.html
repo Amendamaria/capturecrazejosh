@@ -1,539 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unspoken Corners | Joshua Joby</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-center: #0d1117;
-            --bg-edge: #050505;
-            --accent-cyan: #00D2FF;
-            --accent-purple: #9D50BB;
-            --text-main: #ffffff;
-            --text-dim: #a0a0a0;
-            --transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        /* Smooth Scroll & Custom Scrollbar */
-        html { scroll-behavior: auto; /* Let GSAP handle smoothness if needed, or keep auto for standard ScrollTrigger */ }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-edge); }
-        ::-webkit-scrollbar-thumb { 
-            background: rgba(0, 210, 255, 0.3); 
-            border-radius: 10px; 
-            transition: var(--transition);
-        }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Hide default cursor */ }
-        
-        body {
-            background: var(--bg-edge);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-        /* Custom Cursor */
-        .cursor {
-            position: fixed;
-            top: 0; left: 0;
-            width: 8px; height: 8px;
-            background: var(--accent-cyan);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10000;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px var(--accent-cyan), 0 0 20px var(--accent-cyan);
-            transition: width 0.3s, height 0.3s, background 0.3s;
-        }
-        .cursor-follower {
-            position: fixed;
-            top: 0; left: 0;
-            width: 40px; height: 40px;
-            border: 1px solid rgba(0, 210, 255, 0.5);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
-        }
-        .cursor.active {
-            width: 12px; height: 12px;
-            background: var(--accent-purple);
-            box-shadow: 0 0 15px var(--accent-purple), 0 0 30px var(--accent-purple);
-        }
-        .cursor-follower.active {
-            width: 60px; height: 60px;
-            border-color: rgba(157, 80, 187, 0.8);
-            background: rgba(157, 80, 187, 0.1);
-        }
-        /* Ambient Background Glow */
-        .ambient-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at 50% 50%, rgba(0, 210, 255, 0.05) 0%, transparent 60%);
-            z-index: -2;
-            pointer-events: none;
-        }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
-        /* --- 1. Top Left Navigation --- */
-        .nav-bar {
-            position: fixed;
-            top: 25px;
-            left: 25px;
-            z-index: 1000;
-            background: rgba(5, 5, 5, 0.5);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 12px 25px;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            gap: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        .nav-bar a {
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: var(--transition);
-            opacity: 0.6;
-            position: relative;
-        }
-        .nav-bar a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -6px;
-            left: 50%;
-            background: var(--accent-cyan);
-            transition: var(--transition);
-            transform: translateX(-50%);
-            box-shadow: 0 0 8px var(--accent-cyan);
-        }
-        .nav-bar a:hover { opacity: 1; color: var(--accent-cyan); text-shadow: 0 0 10px rgba(0,210,255,0.5); }
-        .nav-bar a:hover::after { width: 100%; }
-        /* --- 2. Hero --- */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-        .hero p { 
-            color: var(--accent-cyan); 
-            font-weight: 700; 
-            letter-spacing: 3px; 
-            text-transform: uppercase; 
-            margin-bottom: 15px; 
-            font-size: 0.9rem;
-            text-shadow: 0 0 15px rgba(0,210,255,0.4);
-        }
-        .hero h1 {
-            font-size: clamp(4rem, 12vw, 8.5rem);
-            font-weight: 900;
-            background: linear-gradient(to right, #fff, var(--accent-purple), var(--accent-cyan));
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 10px 0;
-            line-height: 1;
-            letter-spacing: -3px;
-            animation: gradientFlow 6s ease infinite alternate;
-        }
-        .hero h2 { 
-            font-size: clamp(1.2rem, 4vw, 2rem); 
-            color: rgba(255,255,255,0.7); 
-            font-weight: 300; 
-            letter-spacing: -0.5px;
-        }
-        @keyframes gradientFlow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-        /* Leaf Elements */
-        .nature-scene {
-            position: absolute;
-            top: 15vh;
-            right: 10%;
-            width: 300px;
-            height: 400px;
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0.8;
-        }
-        
-        .main-leaf-svg {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 250px;
-            height: 250px;
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
-        }
-        .falling-leaf-svg {
-            position: absolute;
-            top: 55%;
-            left: 38%;
-            width: 20px;
-            height: 30px;
-            filter: drop-shadow(0 0 10px var(--accent-cyan)) drop-shadow(0 0 20px rgba(0,210,255,0.6));
-            z-index: 10;
-        }
-        /* Apple-Style Explanation Section */
-        .explanation-section {
-            height: 400vh;
-            position: relative;
-            background-color: var(--bg-edge);
-        }
-        .sticky-container {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .explain-text {
-            position: absolute;
-            font-size: clamp(2rem, 6vw, 4.5rem);
-            font-weight: 900;
-            text-align: center;
-            max-width: 1000px;
-            padding: 0 20px;
-            opacity: 0;
-            line-height: 1.2;
-            letter-spacing: -1px;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-        .text-1 { background: linear-gradient(135deg, #fff, #a0a0a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .text-2 { background: linear-gradient(135deg, var(--accent-cyan), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .text-3 { background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        /* --- 3. About --- */
-        .about-section { 
-            padding: 200px 0; 
-            background: linear-gradient(to bottom, transparent, rgba(0, 210, 255, 0.03)); 
-            position: relative;
-        }
-        .about-content { 
-            max-width: 900px; 
-            margin: 0 auto; 
-            text-align: center; 
-            padding: 60px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 30px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.02);
-        }
-        .about-section h3 { 
-            color: var(--accent-cyan); 
-            margin-bottom: 40px; 
-            font-size: 1.2rem; 
-            text-transform: uppercase; 
-            letter-spacing: 4px; 
-            text-shadow: 0 0 10px rgba(0,210,255,0.3);
-        }
-        .about-text-line {
-            overflow: hidden;
-            display: block;
-            margin-bottom: 10px;
-        }
-        .about-text-inner {
-            display: inline-block;
-            font-size: clamp(1.2rem, 3vw, 1.6rem); 
-            color: rgba(255,255,255,0.8); 
-            line-height: 1.6; 
-            font-weight: 300;
-        }
-        .about-content strong { color: #fff; font-weight: 700; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
-        /* --- 4. Bento Gallery Layout --- */
-        .gallery-section { padding: 150px 0; position: relative; }
-        .gallery-header { padding-bottom: 80px; text-align: center; }
-        .gallery-header h3 { color: #fff; font-size: 3rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 15px; }
-        
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: 300px;
-            gap: 24px;
-            padding-bottom: 80px;
-        }
-        .item { 
-            position: relative;
-            overflow: hidden; 
-            border-radius: 24px; 
-            background: #111; 
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: border-color 0.6s ease;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            /* Important for GSAP parallax and stagger */
-            will-change: transform;
-        }
-        .item img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            filter: brightness(0.4) grayscale(50%); 
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); 
-            transform: scale(1.05); /* Slight initial scale for hover effect */
-        }
-        
-        .item::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
-            opacity: 0.8;
-            transition: var(--transition);
-            pointer-events: none;
-        }
-        .item-content {
-            position: absolute;
-            bottom: 30px;
-            left: 30px;
-            right: 30px;
-            z-index: 3;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-            pointer-events: none;
-        }
-        .item-content h4 {
-            color: #fff;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-        }
-        .item-content p {
-            color: var(--accent-cyan);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
-        }
-        .item:hover { 
-            border-color: rgba(0, 210, 255, 0.4); 
-            box-shadow: 0 30px 60px rgba(0, 210, 255, 0.15), 0 0 20px rgba(0,210,255,0.1) inset;
-        }
-        .item:hover img { 
-            filter: brightness(1) grayscale(0%); 
-            transform: scale(1.15); 
-        }
-        .item:hover::after { opacity: 0.4; }
-        .item:hover .item-content {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    
-        /* Bento Logic */
-        .bento-large { grid-column: span 2; grid-row: span 2; }
-        .bento-tall { grid-row: span 2; }
-        .bento-wide { grid-column: span 2; }
-        @media (max-width: 1000px) {
-            .gallery { grid-template-columns: repeat(2, 1fr); }
-            .nature-scene { display: none; }
-        }
-        @media (max-width: 600px) {
-            .gallery { display: flex; flex-direction: column; }
-            .item { height: 400px; }
-            .about-content { padding: 40px 20px; }
-        }
-        /* --- 5. Lightbox Modal --- */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 99999;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            overflow-y: auto;
-            padding: 60px 20px;
-            opacity: 0;
-            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .modal.active { opacity: 1; }
-        .modal-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            transform: scale(0.95) translateY(20px);
-            opacity: 0;
-            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-            transition-delay: 0.1s;
-        }
-        .modal.active .modal-container {
-            transform: scale(1) translateY(0);
-            opacity: 1;
-        }
-        .modal-content {
-            width: 100%;
-            max-height: 80vh;
-            object-fit: contain;
-            border-radius: 12px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 50px rgba(0,210,255,0.1);
-            margin-bottom: 60px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .modal-blog {
-            width: 100%;
-            max-width: 800px;
-            text-align: center;
-            padding-bottom: 80px;
-        }
-        .modal-blog h4 {
-            color: #fff;
-            margin-bottom: 30px;
-            font-size: 2.5rem;
-            font-weight: 900;
-            letter-spacing: -1px;
-            background: linear-gradient(to right, #fff, var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .modal-blog p {
-            color: rgba(255,255,255,0.8);
-            font-size: 1.2rem;
-            font-weight: 300;
-            margin-bottom: 50px;
-            white-space: pre-line;
-            line-height: 1.9;
-        }
-        .back-btn {
-            background: rgba(255,255,255,0.05);
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 16px 40px;
-            border-radius: 50px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            backdrop-filter: blur(10px);
-        }
-        .back-btn:hover { 
-            background: #fff;
-            color: #000;
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(255,255,255,0.2);
-        }
-        .close-modal {
-            position: fixed;
-            top: 40px;
-            right: 40px;
-            font-size: 1.5rem;
-            color: white;
-            z-index: 100000;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
-        }
-        
-        .close-modal:hover {
-            background: var(--accent-purple);
-            color: #fff;
-            border-color: var(--accent-purple);
-            transform: rotate(90deg) scale(1.1);
-            box-shadow: 0 0 20px var(--accent-purple);
-        }
-        /* --- 6. See More & Footer --- */
-        .see-more-wrapper { text-align: center; padding: 120px 0; border-top: 1px solid rgba(255,255,255,0.02); }
-        .see-more-btn {
-            text-decoration: none; font-size: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px;
-            padding: 24px 60px; border: 1px solid rgba(0, 210, 255, 0.5); border-radius: 60px; color: #ffffff; 
-            transition: var(--transition); display: inline-block;
-            background: rgba(0, 210, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            box-shadow: 0 0 20px rgba(0,210,255,0.1);
-        }
-        
-        .see-more-btn::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; width: 100%; height: 0%;
-            background: var(--accent-cyan);
-            transition: height 0.4s ease;
-            z-index: -1;
-        }
-        .see-more-btn:hover { color: #000000; transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,210,255,0.3); }
-        .see-more-btn:hover::after { height: 100%; }
-        footer { 
-            padding: 150px 0 80px; 
-            text-align: center; 
-            position: relative; 
-            overflow: hidden; 
-            background: linear-gradient(to top, #020202, var(--bg-edge));
-        }
-        
-        .social-links { display: flex; justify-content: center; gap: 2em; margin: 50px 0; }
-        .social-links a { 
-            color: var(--text-main); 
-            font-size: 1.5rem; 
-            transition: var(--transition); 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.05);
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(10px);
-        }
-        .social-links a:hover { 
-            color: #fff; 
-            transform: translateY(-10px) scale(1.1); 
-            background: var(--accent-purple);
-            border-color: var(--accent-purple);
-            box-shadow: 0 15px 40px rgba(157, 80, 187, 0.4);
-        }
-        .footer-logo { font-weight: 900; color: #fff; font-size: 4rem; margin-bottom: 10px; display: block; letter-spacing: -3px; text-shadow: 0 0 20px rgba(255,255,255,0.2);}
-        .footer-credits { color: var(--text-dim); font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; margin-top: 80px; opacity: 0.4;}
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Custom Cursor -->
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
     <div class="ambient-bg"></div>
-    <nav class="nav-bar">
+    <nav class="nav-bar" aria-label="Primary navigation">
         <a href="#home">Home</a>
         <a href="#about">About</a>
         <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle dark/light theme">
+            <i class="fa-solid fa-moon"></i>
+        </button>
     </nav>
     <div class="container">
         <section id="home" class="hero">
@@ -542,13 +31,15 @@
                 <h1 class="hero-title">JOSHUA JOBY</h1>
                 <h2 class="hero-subtitle">Capturing the beauty hidden in everyday life.</h2>
             </div>
-            
+
             <!-- Cinematic Nature Elements -->
             <div class="nature-scene">
                 <!-- Glowing Main Leaf -->
                 <svg class="main-leaf-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M50 95 C 20 80, 5 40, 40 5 C 80 20, 95 60, 50 95 Z" fill="none" stroke="rgba(0, 210, 255, 0.4)" stroke-width="0.5" />
-                    <path d="M40 5 C 45 40, 48 70, 50 95" fill="none" stroke="rgba(0, 210, 255, 0.2)" stroke-width="0.5" />
+                    <path d="M50 95 C 20 80, 5 40, 40 5 C 80 20, 95 60, 50 95 Z" fill="none"
+                        stroke="rgba(0, 210, 255, 0.4)" stroke-width="0.5" />
+                    <path d="M40 5 C 45 40, 48 70, 50 95" fill="none" stroke="rgba(0, 210, 255, 0.2)"
+                        stroke-width="0.5" />
                     <!-- Veins -->
                     <path d="M45 25 Q 30 30 25 45" fill="none" stroke="rgba(0, 210, 255, 0.15)" stroke-width="0.5" />
                     <path d="M47 45 Q 35 50 25 65" fill="none" stroke="rgba(0, 210, 255, 0.15)" stroke-width="0.5" />
@@ -582,26 +73,51 @@
         <div class="container about-content">
             <h3 class="about-title">About Me</h3>
             <p class="about-paragraph">
-                <span class="about-text-line"><span class="about-text-inner">I am Joshua Joby, a photographer known online as</span></span>
-                <span class="about-text-line"><span class="about-text-inner"><strong>Capturecrazejosh</strong> and the creative mind behind the series</span></span>
-                <span class="about-text-line"><span class="about-text-inner"><strong>Unspoken Corners</strong>. Through my lens, I explore light,</span></span>
-                <span class="about-text-line"><span class="about-text-inner">perspective, and atmosphere, transforming quiet everyday spaces</span></span>
-                <span class="about-text-line"><span class="about-text-inner">into cinematic visual stories. My work focuses on revealing the</span></span>
-                <span class="about-text-line"><span class="about-text-inner">hidden beauty and emotion within moments that often go unnoticed.</span></span>
+                <span class="about-text-line"><span class="about-text-inner">I am Joshua Joby, a photographer known
+                        online as</span></span>
+                <span class="about-text-line"><span class="about-text-inner"><strong>Capturecrazejosh</strong> and the
+                        creative mind behind the series</span></span>
+                <span class="about-text-line"><span class="about-text-inner"><strong>Unspoken Corners</strong>. Through
+                        my lens, I explore light,</span></span>
+                <span class="about-text-line"><span class="about-text-inner">perspective, and atmosphere, transforming
+                        quiet everyday spaces</span></span>
+                <span class="about-text-line"><span class="about-text-inner">into cinematic visual stories. My work
+                        focuses on revealing the</span></span>
+                <span class="about-text-line"><span class="about-text-inner">hidden beauty and emotion within moments
+                        that often go unnoticed.</span></span>
             </p>
         </div>
     </section>
+
     <section id="gallery" class="gallery-section">
         <div class="container">
             <div class="gallery-header">
                 <h3>Visual Stories</h3>
-                <p style="font-size: 1.1rem; color: rgba(255,255,255,0.6); letter-spacing: 1px;">Click any image to reveal the hidden narrative.</p>
+                <p style="font-size: 1.1rem; color: rgba(255,255,255,0.6); letter-spacing: 1px;">Click any image to
+                    reveal the hidden narrative.</p>
             </div>
-            
+
             <main class="gallery">
-                <div class="item bento-large">
-                    <img src="photo3.jpg" loading="lazy" alt="Roots That Remember" data-blog="The forest didn’t feel silent—it felt watchful.
-Twisted roots spread across the ground like veins, holding on to stories older than time. Standing there during our school tour, in the quiet afternoon light of Gunacave, it felt as if nature itself was breathing slowly around us.
+                <!-- Item 1: Book Reel (2x2 Video) -->
+                <div class="item bento-2x2 video-card"
+                    data-video="https://github.com/user-attachments/assets/afbbaedf-7fab-4296-9eae-b5a1f59d41a9">
+                    <video class="card-video-bg" poster="thumbnail.jpg" preload="metadata" muted playsinline>
+                        <source src="https://github.com/user-attachments/assets/afbbaedf-7fab-4296-9eae-b5a1f59d41a9"
+                            type="video/mp4">
+                    </video>
+                    <div class="video-overlay-icon">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                    <div class="item-content">
+                        <h4>Book Reel</h4>
+                        <p>A cinematic glimpse into the world of Unspoken Corners</p>
+                    </div>
+                    <span class="device-badge"><i class="fa-solid fa-video"></i> Video Reel</span>
+                </div>
+
+                <!-- Item 2: Roots That Remember (1x2 Tall) -->
+                <div class="item bento-1x2">
+                    <img src="img/photo3.jpg" loading="lazy" alt="Roots That Remember" data-blog="The forest didn’t feel silent—it felt watchful. Twisted roots spread across the ground like veins, holding on to stories older than time. Standing there during our school tour, in the quiet afternoon light of Gunacave, it felt as if nature itself was breathing slowly around us.
 This tree, bent yet unbroken, felt deeply human—scarred, grounded, and still standing tall despite everything beneath it. The fog softened the chaos, turning tangled roots and branches into a calm rhythm. For a moment, the noise of friends, laughter, and schedules faded, and it was just this scene and me.
 Shot on Moto G85, this frame wasn’t planned. It was felt.
 A pause in a busy day.
@@ -610,9 +126,13 @@ A reminder that even in confusion, there is strength in staying rooted.">
                         <h4>Roots That Remember</h4>
                         <p>Gunacave, Moto G85</p>
                     </div>
+                    <span class="device-badge"><i class="fa-solid fa-camera"></i> Moto G85</span>
                 </div>
-                <div class="item bento-tall">
-                    <img src="photo13.jpg" loading="lazy" alt="Whispers of Lavender" data-blog="The photo was taken in Vagamon, a beautiful location with hills that speak of nature softly and showcase beauty in small forms. It was taken using a vivo y11, and what attracted me to this wildflower was not its size, but its presence.
+
+                <!-- Item 3: Whispers of Lavender (1x1 Small) -->
+                <div class="item bento-1x1">
+                    <img src="img/photo13.jpg" loading="lazy" alt="Whispers of Lavender"
+                        data-blog="The photo was taken in Vagamon, a beautiful location with hills that speak of nature softly and showcase beauty in small forms. It was taken using a vivo y11, and what attracted me to this wildflower was not its size, but its presence.
 The soft purple bloom stood out gently against the dark, blurry background, creating a natural separation between the subject and the environment. I decided to keep the framing simple, giving the flower space to breathe. The shallow focus helps to emphasize the beauty of the textures on the flower, as each little piece has a story to tell.
 Vagamon has a way of slowness. In such an atmosphere, events like this take you by surprise. This was no instance of capturing the perfect flower shot; it was about celebrating an aspect that could easily pass one by.
 Through this image, I hoped to convey a sense of tranquility, emphasizing that sometimes it is the smallest details that create the greatest lasting impression, even when in a wide expanse.">
@@ -620,18 +140,38 @@ Through this image, I hoped to convey a sense of tranquility, emphasizing that s
                         <h4>Whispers of Lavender</h4>
                         <p>Vagamon, vivo Y11</p>
                     </div>
+                    <span class="device-badge"><i class="fa-solid fa-camera"></i> vivo Y11</span>
                 </div>
-                <div class="item">
-                    <img src="photo11.jpg" loading="lazy" alt="Windows of Quiet Memories" data-blog="After school, on the way home, this monastery stood calm—unchanged, unhurried. The blue windows and doors felt like gentle pauses in time, holding years of silence, prayers, and footsteps of those who passed through before us. At Mannanam, the presence of St. Chavara feels close, not loud just steady, like a memory that never fades.
+
+                <!-- Item 6: Quiet Guardian of Light (1x1 Small) -->
+                <div class="item bento-1x1">
+                    <img src="img/photo6.jpg" loading="lazy" alt="Quiet Guardian of Light"
+                        data-blog="Resting in a pool of soft artificial light, this little angel feels almost alive. The shadows wrap gently around its face, while the glow highlights every curve, every delicate detail. There is a sense of innocence here, mixed with calm, like a silent guardian watching over the room.
+Captured in a simple studio setup at home, this decor piece becomes more than an object. It feels thoughtful, almost human, as if it is listening rather than speaking. The darkness around it gives space for emotion, letting the light tell its own story. Moments like this remind us that beauty does not always need grand places. Sometimes it lives quietly on a shelf, waiting to be noticed.
+Shot on vivo Y11, this frame is about patience and observation. A small setup, a controlled light, and a peaceful subject coming together to create a gentle mood.">
+                    <div class="item-content">
+                        <h4>Quiet Guardian of Light</h4>
+                        <p>Studio, vivo Y11</p>
+                    </div>
+                    <span class="device-badge"><i class="fa-solid fa-camera"></i> vivo Y11</span>
+                </div>
+
+                <!-- Item 4: Windows of Quiet Memories (2x1 Wide) -->
+                <div class="item bento-2x1">
+                    <img src="img/photo11.jpg" loading="lazy" alt="Windows of Quiet Memories"
+                        data-blog="After school, on the way home, this monastery stood calm—unchanged, unhurried. The blue windows and doors felt like gentle pauses in time, holding years of silence, prayers, and footsteps of those who passed through before us. At Mannanam, the presence of St. Chavara feels close, not loud just steady, like a memory that never fades.
 The building didn’t ask for attention. It simply existed, clean and composed, letting the afternoon light rest on its white walls. Looking at it now, it brings back school-day thoughts bags on our shoulders, tired feet, and minds full of small dreams. Some places don’t speak they remind.
 Shot on vivo Y11, this frame is less about architecture and more about feeling. A moment between school and home. Between noise and calm. Between who we were and who we’re becoming.">
                     <div class="item-content">
                         <h4>Windows of Quiet Memories</h4>
                         <p>Mannanam, vivo Y11</p>
                     </div>
+                    <span class="device-badge"><i class="fa-solid fa-camera"></i> vivo Y11</span>
                 </div>
-                <div class="item bento-wide">
-                    <img src="photo5.jpg" loading="lazy" alt="Where the Road Slows You Down" data-blog="On our school tour to Munnar, this road felt like a gentle pause in motion. Curving through endless tea plantations, it didn’t rush anywhere it invited you to slow down and look around. The green hills rolled quietly under a cloudy sky, each layer softer than the last.
+
+                <!-- Item 5: Where the Road Slows You Down (2x2 Large) -->
+                <div class="item bento-2x2">
+                    <img src="img/photo5.jpg" loading="lazy" alt="Where the Road Slows You Down" data-blog="On our school tour to Munnar, this road felt like a gentle pause in motion. Curving through endless tea plantations, it didn’t rush anywhere it invited you to slow down and look around. The green hills rolled quietly under a cloudy sky, each layer softer than the last.
 Standing there, surrounded by tea gardens, the air felt cooler and lighter, carrying the calm that only mountains know. Laughter from friends echoed somewhere behind, but this moment stayed still, almost personal. It felt like the road was teaching us something simple: not every journey is about reaching fast—some are meant to be felt.
 Shot on vivo Y11, this frame holds more than a landscape.
 It holds a school day memory, fresh wind, and a bend in the road that made us stop and breathe.">
@@ -639,27 +179,26 @@ It holds a school day memory, fresh wind, and a bend in the road that made us st
                         <h4>Where the Road Slows You Down</h4>
                         <p>Munnar, vivo Y11</p>
                     </div>
+                    <span class="device-badge"><i class="fa-solid fa-camera"></i> vivo Y11</span>
                 </div>
-                <div class="item">
-                    <img src="photo6.jpg" loading="lazy" alt="Quiet Guardian of Light" data-blog="Resting in a pool of soft artificial light, this little angel feels almost alive. The shadows wrap gently around its face, while the glow highlights every curve, every delicate detail. There is a sense of innocence here, mixed with calm, like a silent guardian watching over the room.
-Captured in a simple studio setup at home, this decor piece becomes more than an object. It feels thoughtful, almost human, as if it is listening rather than speaking. The darkness around it gives space for emotion, letting the light tell its own story. Moments like this remind us that beauty does not always need grand places. Sometimes it lives quietly on a shelf, waiting to be noticed.
-Shot on vivo Y11, this frame is about patience and observation. A small setup, a controlled light, and a peaceful subject coming together to create a gentle mood.">
-                    <div class="item-content">
-                        <h4>Quiet Guardian of Light</h4>
-                        <p>Studio, vivo Y11</p>
-                    </div>
-                </div>
-                <div class="item bento-tall">
-                    <img src="photo2.jpg" loading="lazy" alt="Rain Interrupted Ride 🌧️🚴♂️" data-blog="Resting in a pool of soft artificial light, this little angel feels almost alive. The shadows wrap gently around its face, while the glow highlights every curve, every delicate detail. There is a sense of innocence here, mixed with calm, like a silent guardian watching over the room.
+
+                <!-- Item 7: Rain Interrupted Ride (2x1 Wide) -->
+                <div class="item bento-2x1">
+                    <img src="img/photo2.jpg" loading="lazy" alt="Rain Interrupted Ride 🌧️🚴♂️"
+                        data-blog="Resting in a pool of soft artificial light, this little angel feels almost alive. The shadows wrap gently around its face, while the glow highlights every curve, every delicate detail. There is a sense of innocence here, mixed with calm, like a silent guardian watching over the room.
 Captured in a simple studio setup at home, this decor piece becomes more than an object. It feels thoughtful, almost human, as if it is listening rather than speaking. The darkness around it gives space for emotion, letting the light tell its own story. Moments like this remind us that beauty does not always need grand places. Sometimes it lives quietly on a shelf, waiting to be noticed.
 Shot on vivo Y11, this frame is about patience and observation. A small setup, a controlled light, and a peaceful subject coming together to create a gentle mood.">
                     <div class="item-content">
                         <h4>Rain Interrupted Ride</h4>
                         <p>vivo Y11</p>
                     </div>
+                    <span class="device-badge"><i class="fa-solid fa-camera"></i> vivo Y11</span>
                 </div>
-                <div class="item">
-                    <img src="photo1.jpg" loading="lazy" alt="Sunset Silhouette" data-blog="Image captured at Paruthumpara View Point at sunset, captured with a Moto G85 mobile phone. No pre-planned plan, just a random moment of convergence of light, sky, silence.
+
+                <!-- Item 8: Sunset Silhouette (2x2 Large) -->
+                <div class="item bento-2x2">
+                    <img src="img/photo1.jpg" loading="lazy" alt="Sunset Silhouette"
+                        data-blog="Image captured at Paruthumpara View Point at sunset, captured with a Moto G85 mobile phone. No pre-planned plan, just a random moment of convergence of light, sky, silence.
 With the sun sinking below the horizon, the clouds formed a layered pattern in the sky. They moved from a warm gold color to dark shadows. The contrast was strong and peaceful, a breath before nightfall. I saw two people on the outskirts of the hillside, and they became the grounding element for the background. Keeping them in shadows was important, as details might have taken away from the emotional impact.
 I decided to let the foreground sink into darkness, letting the sky guide the narrative. The light didn’t need any additional help, as it conveyed its own atmosphere. This image isn’t about who these people are, but rather what they symbolize, which is shared silence, shared presence, and the beauty of being there.
 The fact that I used my mobile to shoot reminded me that photography is not about gears but simply awareness. One needs to be able to observe when the sky intends to make some noise.">
@@ -667,400 +206,95 @@ The fact that I used my mobile to shoot reminded me that photography is not abou
                         <h4>Sunset Silhouette</h4>
                         <p>Paruthumpara, Moto G85</p>
                     </div>
+                    <span class="device-badge"><i class="fa-solid fa-camera"></i> Moto G85</span>
                 </div>
-                <div class="item">
-                    <img src="photo4.jpg" loading="lazy" alt="Before the Rain Speaks 🌥️🌊" data-blog="Captured on my Vivo Y11 during our school tour, this was one of those unexpected moments that didn’t ask for attention but deserved it.
+
+                <!-- Item 9: Before the Rain Speaks (1x2 Tall) -->
+                <div class="item bento-1x2">
+                    <img src="img/photo4.jpg" loading="lazy" alt="Before the Rain Speaks 🌥️🌊"
+                        data-blog="Captured on my Vivo Y11 during our school tour, this was one of those unexpected moments that didn’t ask for attention but deserved it.
 At Mattupetti Dam, the sky slowly turned heavy with dark clouds. The lake stayed calm, almost like it was holding its breath. The colorful boats resting by the shore added a quiet contrast to the moody sky above.
 There was no plan to take this shot. No perfect timing. Just a sudden feeling to pause and frame what I saw. Sometimes the most beautiful memories are the ones we don’t prepare for 📷✨">
                     <div class="item-content">
                         <h4>Before the Rain Speaks</h4>
                         <p>Mattupetti Dam, vivo Y11</p>
                     </div>
+                    <span class="device-badge"><i class="fa-solid fa-camera"></i> vivo Y11</span>
                 </div>
-                <div class="item">
-                    <img src="photo12.jpg" loading="lazy" alt="Framed by Silence 🌙✨" data-blog="Captured on my Samsung M15, this was one of those completely unexpected shots that felt perfectly composed without trying too hard.
+
+                <!-- Item 10: Framed by Silence (1x2 Tall) -->
+                <div class="item bento-1x2">
+                    <img src="img/photo12.jpg" loading="lazy" alt="Framed by Silence 🌙✨"
+                        data-blog="Captured on my Samsung M15, this was one of those completely unexpected shots that felt perfectly composed without trying too hard.
 The moon sat quietly in the deep blue sky, while the branches naturally framed it like a gentle outline. I didn’t plan the composition. I just looked up and felt the balance between darkness and light.
 The leaves turned into silhouettes, the sky became a soft canvas, and the moon stood there calm and confident. Sometimes composition is not about rules. It is about feeling the frame before pressing the shutter 📷🤍">
                     <div class="item-content">
                         <h4>Framed by Silence</h4>
                         <p>Samsung M15</p>
                     </div>
+                    <span class="device-badge"><i class="fa-solid fa-camera"></i> Samsung M15</span>
                 </div>
             </main>
             <div class="see-more-wrapper">
-                <p style="opacity: 0.5; margin-bottom: 30px; font-size: 14px; letter-spacing: 3px; text-transform: uppercase;">Discover more unspoken stories</p>
-                <a href="https://drive.google.com/drive/folders/1ZpGchlmHQU6h1qaQZlySL6o0M57p5RIj" target="_blank" class="see-more-btn">
+                <p
+                    style="opacity: 0.5; margin-bottom: 30px; font-size: 14px; letter-spacing: 3px; text-transform: uppercase;">
+                    Discover more unspoken stories</p>
+                <a href="https://drive.google.com/drive/folders/1ZpGchlmHQU6h1qaQZlySL6o0M57p5RIj" target="_blank"
+                    class="see-more-btn">
                     View Full Archive
                 </a>
             </div>
+
         </div>
     </section>
     <!-- Modal -->
     <div id="imageModal" class="modal">
-        <span class="close-modal"><i class="fa-solid fa-xmark"></i></span>
+        <button class="close-modal" type="button" aria-label="Close image story"><i
+                class="fa-solid fa-xmark"></i></button>
         <div class="modal-container">
-            <img class="modal-content" id="modalImg">
+            <img class="modal-content" id="modalImg" style="display: none;">
+            <video class="modal-content" id="modalVideo" controls playsinline style="display: none;"></video>
             <div class="modal-blog">
                 <h4 id="modalTitle"></h4>
                 <p id="modalDescription"></p>
-                <button class="back-btn" id="modalBackBtn"><i class="fa-solid fa-arrow-left"></i> Return to Gallery</button>
+                <button class="back-btn" id="modalBackBtn"><i class="fa-solid fa-arrow-left"></i> Return to
+                    Gallery</button>
             </div>
         </div>
     </div>
     <footer id="contact">
         <div class="container footer-content">
             <span class="footer-logo">Capturecrazejosh.</span>
-            <p style="color: var(--text-dim); font-weight: 700; letter-spacing: 4px; font-size: 0.85rem; margin-top: 30px;">CONNECT WITH ME</p>
-            
+            <p
+                style="color: var(--text-dim); font-weight: 700; letter-spacing: 4px; font-size: 0.85rem; margin-top: 30px;">
+                CONNECT WITH ME</p>
+
             <div class="social-links">
-                <a href="https://wa.me/918157982581" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-                <a href="https://www.instagram.com/_capturecrazejosh_?igsh=dGltNXVwMmV1eDdn" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://x.com/Capturecrazjosh" target="_blank" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
-                <a href="https://linkedin.com/in/joshua-joby-94748638b" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="mailto:capturecrazejosh@gmail.com" aria-label="Email"><i class="fa-regular fa-envelope"></i></a>
+                <a href="https://wa.me/918157982581" target="_blank" aria-label="WhatsApp"><i
+                        class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://www.instagram.com/_capturecrazejosh_?igsh=dGltNXVwMmV1eDdn" target="_blank"
+                    aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://x.com/Capturecrazjosh" target="_blank" aria-label="Twitter"><svg
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                        style="width: 1.5rem; height: 1.5rem; fill: currentColor;">
+                        <path
+                            d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
+                    </svg></a>
+                <a href="https://linkedin.com/in/joshua-joby-94748638b" target="_blank" aria-label="LinkedIn"><i
+                        class="fa-brands fa-linkedin"></i></a>
+                <a href="mailto:capturecrazejosh@gmail.com" aria-label="Email"><i
+                        class="fa-regular fa-envelope"></i></a>
             </div>
-            
-            <p style="font-size: 1.2rem; opacity: 0.8; font-weight: 300;">Turning ordinary scenes into compelling visual stories.</p>
+
+            <p style="font-size: 1.2rem; opacity: 0.8; font-weight: 300;">Turning ordinary scenes into compelling visual
+                stories.</p>
             <p class="footer-credits">© 2026 JOSHUA JOBY · UNSPOKEN CORNERS</p>
         </div>
     </footer>
     <!-- GSAP CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
-        // --- Custom Cursor Logic ---
-        const cursor = document.querySelector('.cursor');
-        const follower = document.querySelector('.cursor-follower');
-        let posX = 0, posY = 0;
-        let mouseX = 0, mouseY = 0;
-        // Use GSAP ticker for smooth cursor follow
-        gsap.ticker.add(() => {
-            posX += (mouseX - posX) / 6;
-            posY += (mouseY - posY) / 6;
-            
-            gsap.set(cursor, { x: mouseX, y: mouseY });
-            gsap.set(follower, { x: posX, y: posY });
-        });
-        document.addEventListener("mousemove", (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-        // Hover effects for cursor
-        const hoverElements = document.querySelectorAll('a, button, .item, .close-modal');
-        hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.classList.add('active');
-                follower.classList.add('active');
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.classList.remove('active');
-                follower.classList.remove('active');
-            });
-        });
-        // --- 1. Initial Load Animations & Leaf Sequence ---
-        const tlLoad = gsap.timeline();
-        
-        // UI elements fade in
-        tlLoad.from(".nav-bar", { y: -50, opacity: 0, duration: 1.2, ease: "power4.out" })
-              .from(".hero-tag", { y: 30, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.8")
-              .from(".hero-title", { y: 50, opacity: 0, duration: 1.2, ease: "power3.out", filter: "blur(10px)" }, "-=0.8")
-              .from(".hero-subtitle", { y: 30, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.8")
-              .from(".main-leaf-svg", { opacity: 0, scale: 0.8, rotation: 15, duration: 2, ease: "power2.out" }, "-=1");
-        // Small leaf initial animation: fades in on the main leaf, then drops slightly
-        tlLoad.fromTo(".falling-leaf-svg", 
-            { scale: 0, opacity: 0, y: -20, rotation: -45 },
-            { scale: 1, opacity: 1, y: 0, rotation: 0, duration: 1.5, ease: "elastic.out(1, 0.5)" },
-            "-=1"
-        )
-        // Simulate a leaf detaching
-        .to(".falling-leaf-svg", {
-            y: 40,
-            rotation: 15,
-            duration: 0.8,
-            ease: "power2.inOut"
-        });
-        // --- 2. Scroll-Linked Leaf Animation ---
-        // As user scrolls the whole page, the small leaf travels downwards and wobbles
-        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-        
-        gsap.to(".falling-leaf-svg", {
-            y: () => totalScroll + 200, // Move it down the entire page height
-            x: "random(-150, 150)", // Drift horizontally
-            rotation: "random(-180, 180)", // Spin randomly
-            ease: "none",
-            scrollTrigger: {
-                trigger: "body",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1.5 // Smooth catch-up
-            }
-        });
-        // Add a continuous gentle sway to the leaf while scrolling
-        gsap.to(".falling-leaf-svg", {
-            rotation: "+=45",
-            x: "+=30",
-            ease: "sine.inOut",
-            yoyo: true,
-            repeat: -1,
-            duration: 3
-        });
-        // --- 3. Apple-Style Sticky Text Reveal ---
-        const tlScroll = gsap.timeline({
-            scrollTrigger: {
-                trigger: ".explanation-section",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1,
-            }
-        });
-        tlScroll.to(".text-1", { opacity: 1, y: -20, duration: 1, filter: "blur(0px)" })
-                .to(".text-1", { opacity: 0, scale: 1.1, y: -50, duration: 1, filter: "blur(10px)" }, "+=0.5")
-                .to(".text-2", { opacity: 1, y: -20, duration: 1, filter: "blur(0px)" })
-                .to(".text-2", { opacity: 0, scale: 1.1, y: -50, duration: 1, filter: "blur(10px)" }, "+=0.5")
-                .to(".text-3", { opacity: 1, y: -20, duration: 1, filter: "blur(0px)" })
-                .to(".text-3", { opacity: 0, scale: 1.1, y: -50, duration: 1, filter: "blur(10px)" }, "+=0.5");
-        // --- 4. Cinematic About Section Reveal ---
-        const tlAbout = gsap.timeline({
-            scrollTrigger: {
-                trigger: ".about-section",
-                start: "top 60%",
-            }
-        });
-        
-        tlAbout.from(".about-content", {
-            scale: 0.95,
-            opacity: 0,
-            y: 50,
-            duration: 1.5,
-            ease: "power4.out",
-            filter: "blur(10px)"
-        })
-        .from(".about-title", {
-            y: 20, opacity: 0, duration: 1
-        }, "-=1")
-        // Animate text line by line
-        .from(".about-text-inner", {
-            y: "100%",
-            opacity: 0,
-            duration: 1,
-            stagger: 0.15,
-            ease: "power3.out"
-        }, "-=0.5");
-        // --- 5. Gallery Section Parallax & Stagger ---
-        gsap.from(".gallery-header", {
-            scrollTrigger: {
-                trigger: ".gallery-section",
-                start: "top 75%",
-            },
-            y: 40,
-            opacity: 0,
-            duration: 1.2,
-            ease: "power3.out"
-        });
-        // Staggered reveal for grid items
-        gsap.from(".item", {
-            scrollTrigger: {
-                trigger: ".gallery",
-                start: "top 80%",
-            },
-            y: 80,
-            opacity: 0,
-            duration: 1.2,
-            stagger: 0.1,
-            ease: "power4.out",
-            filter: "blur(5px)"
-        });
-        // Parallax effect on scroll for gallery items to give 3D depth
-        gsap.utils.toArray('.item').forEach((item, i) => {
-            // Give different speeds based on index to create depth
-            const speed = (i % 3 + 1) * 20; 
-            gsap.to(item, {
-                yPercent: -speed,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: ".gallery-section",
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1
-                }
-            });
-        });
-        // --- 6. Footer Reveal ---
-        gsap.from(".footer-content > *", {
-            scrollTrigger: {
-                trigger: "footer",
-                start: "top 85%",
-            },
-            y: 40,
-            opacity: 0,
-            duration: 1,
-            stagger: 0.1,
-            ease: "power3.out"
-        });
-        // --- Modal Logic ---
-        const modal = document.getElementById("imageModal");
-        const modalImg = document.getElementById("modalImg");
-        const modalTitle = document.getElementById("modalTitle");
-        const modalDesc = document.getElementById("modalDescription");
-        const closeBtn = document.querySelector(".close-modal");
-        const backBtn = document.getElementById("modalBackBtn");
-        document.querySelectorAll('.item').forEach(item => {
-            item.onclick = () => {
-                const img = item.querySelector('img');
-                modal.style.display = "block";
-                void modal.offsetWidth; 
-                setTimeout(() => { modal.classList.add("active"); }, 10);
-                
-                modalImg.src = img.src;
-                modalTitle.innerText = img.alt;
-                modalDesc.innerText = img.getAttribute('data-blog') || "This moment was captured to preserve the beauty of the world.";
-                document.body.style.overflow = "hidden"; 
-                modal.scrollTop = 0;
-            }
-        });
-        const closeModal = () => {
-            modal.classList.remove("active");
-            setTimeout(() => {
-                modal.style.display = "none";
-                document.body.style.overflow = "auto";
-            }, 600); 
-        };
-        closeBtn.onclick = closeModal;
-        backBtn.onclick = closeModal;
-        
-        window.onclick = (event) => { if (event.target == modal) closeModal(); };
-        document.addEventListener('keydown', (e) => { if (e.key === "Escape") closeModal(); });
-    </script>
+    <script src="script.js"></script>
 </body>
+
 </html>
-<!-- ONLY showing CHANGED parts merged into your original -->
-
-<!-- ✅ CSS FIX (replace these values inside your style) -->
-<style>
-.explanation-section {
-    height: 250vh; /* reduced from 400vh */
-}
-
-.about-section { 
-    padding: 120px 0; /* reduced from 200px */
-}
-</style><script>
-// ================================
-// CUSTOM CURSOR (UNCHANGED)
-// ================================
-
-
-// ================================
-// REALISTIC LEAF ANIMATION
-// ================================
-const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-
-// Vertical fall (scroll controlled)
-gsap.to(".falling-leaf-svg", {
-    y: () => totalScroll + 200,
-    ease: "none",
-    scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.5
-    }
-});
-
-// Natural side drift
-gsap.to(".falling-leaf-svg", {
-    x: "+=80",
-    rotation: "+=120",
-    duration: 2.5,
-    ease: "sine.inOut",
-    yoyo: true,
-    repeat: -1
-});
-
-// Small wobble
-gsap.to(".falling-leaf-svg", {
-    x: "+=20",
-    rotation: "+=30",
-    duration: 1.2,
-    ease: "sine.inOut",
-    yoyo: true,
-    repeat: -1
-});
-
-// Subtle blur for realism
-gsap.to(".falling-leaf-svg", {
-    filter: "blur(1px)",
-    duration: 2,
-    yoyo: true,
-    repeat: -1,
-    ease: "sine.inOut"
-});
-
-
-// ================================
-// MODAL LOGIC (UPDATED)
-// ================================
-const modal = document.getElementById("imageModal");
-const modalImg = document.getElementById("modalImg");
-const modalTitle = document.getElementById("modalTitle");
-const modalDesc = document.getElementById("modalDescription");
-const closeBtn = document.querySelector(".close-modal");
-const backBtn = document.getElementById("modalBackBtn");
-
-document.querySelectorAll('.item').forEach(item => {
-    item.onclick = () => {
-        const img = item.querySelector('img');
-
-        modal.style.display = "block";
-        void modal.offsetWidth;
-
-        setTimeout(() => { modal.classList.add("active"); }, 10);
-
-        modalImg.src = img.src;
-        modalTitle.innerText = img.alt;
-
-        // ✍️ TYPEWRITER EFFECT
-        const text = img.getAttribute('data-blog') || "This moment was captured beautifully.";
-        modalDesc.innerText = "";
-
-        let i = 0;
-        function typeWriter() {
-            if (i < text.length) {
-                modalDesc.innerText += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, 15);
-            }
-        }
-        typeWriter();
-
-        // ✨ Fade animation
-        gsap.fromTo(".modal-blog", 
-            { opacity: 0, y: 40 }, 
-            { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
-        );
-
-        document.body.style.overflow = "hidden";
-        modal.scrollTop = 0;
-    }
-});
-
-const closeModal = () => {
-    modal.classList.remove("active");
-    setTimeout(() => {
-        modal.style.display = "none";
-        document.body.style.overflow = "auto";
-    }, 600);
-};
-
-closeBtn.onclick = closeModal;
-backBtn.onclick = closeModal;
-
-window.onclick = (event) => { 
-    if (event.target == modal) closeModal(); 
-};
-
-document.addEventListener('keydown', (e) => { 
-    if (e.key === "Escape") closeModal(); 
-});
-</script>
